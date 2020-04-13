@@ -13,8 +13,16 @@
   "private": true,
   "husky": {
     "hooks": {
-      "commit-msg": "npm run checkCommitMsg $HUSKY_GIT_PARAMS"
+      "commit-msg": "npm run checkCommitMsg $HUSKY_GIT_PARAMS && git-precommit-checks"
     }
+  },
+  "git-precommit-checks": {
+    "rules": [
+      {
+        "message": "You’ve got leftover conflict markers",
+        "regex": "/^[<>|=]{4,}/m"
+      }
+    ]
   },
   "dependencies": {
     "@angular/animations": "~9.1.1",
@@ -38,6 +46,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
+    "git-precommit-checks": "^3.0.3",
     "husky": "^4.2.5",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~4.2.1",
