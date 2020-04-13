@@ -26,7 +26,8 @@
       true,
       "element",
       "app",
-      "kebab-case"
+      "kebab-case",
+      "base"
     ],
     "eofline": true,
     "import-blacklist": [
