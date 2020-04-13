@@ -6,10 +6,16 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
+    "checkCommitMsg": "node ./husky/checkCommitMsg.js",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
   "private": true,
+  "husky": {
+    "hooks": {
+      "commit-msg": "npm run checkCommitMsg $HUSKY_GIT_PARAMS"
+    }
+  },
   "dependencies": {
     "@angular/animations": "~9.1.1",
     "@angular/common": "~9.1.1",
@@ -28,10 +34,11 @@
     "@angular/cli": "~9.1.1",
     "@angular/compiler-cli": "~9.1.1",
     "@angular/language-service": "~9.1.1",
-    "@types/node": "^12.11.1",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
+    "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
+    "husky": "^4.2.5",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.4.1",
