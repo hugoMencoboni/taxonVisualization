@@ -1,0 +1,12 @@
+<div [formGroup]="form">
+    <div>
+        Test input
+        <input type="text" formControlName="input">
+    </div>
+    <div *ngIf="lastChange">
+        <h3> Dernière modification :</h3>
+        <div>{{lastChangeFormated}}</div>
+    </div>
+
+    <button (click)="formSend">Send</button>
+</div>
