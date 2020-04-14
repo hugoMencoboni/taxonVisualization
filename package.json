@@ -13,7 +13,8 @@
   "private": true,
   "husky": {
     "hooks": {
-      "commit-msg": "npm run checkCommitMsg $HUSKY_GIT_PARAMS && git-precommit-checks"
+      "commit-msg": "npm run checkCommitMsg $HUSKY_GIT_PARAMS && git-precommit-checks",
+      "pre-push": "npm run lint"
     }
   },
   "git-precommit-checks": {
