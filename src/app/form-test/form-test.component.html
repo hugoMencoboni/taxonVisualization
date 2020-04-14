@@ -3,6 +3,7 @@
         Test input
         <input type="text" formControlName="input">
     </div>
+    <base-input [label]="'Test input'" [formGroup]="form" [controlName]="'input2'"></base-input>
     <div *ngIf="lastChange">
         <h3> Dernière modification :</h3>
         <div>{{lastChangeFormated}}</div>
