@@ -1,13 +1,12 @@
 <div [formGroup]="form">
-    <div>
-        Test input
-        <input type="text" formControlName="input">
-    </div>
-    <base-input [label]="'Test input'" [formGroup]="form" [controlName]="'input2'"></base-input>
+    <base-input [label]="'input simple'" [formGroup]="form" [controlName]="'input'"></base-input>
+    <base-input [label]="'Validateur async'" [formGroup]="form" [controlName]="'input2'"></base-input>
+    <base-input [label]="'Date'" [formGroup]="form" [controlName]="'input3'" [type]="'date'"></base-input>
+
+
     <div *ngIf="lastChange">
         <h3> Dernière modification :</h3>
         <div>{{lastChangeFormated}}</div>
     </div>
-
-    <button (click)="formSend">Send</button>
+    <button (click)="formSend()">Send</button>
 </div>

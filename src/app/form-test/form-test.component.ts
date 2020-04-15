@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { pairwise, startWith } from 'rxjs/operators';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Observable, of, Subscription } from 'rxjs';
+import { delay, pairwise, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'base-form-test',
@@ -22,7 +22,8 @@ export class FormTestComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.form = this.fb.group({
       input: ['', Validators.required],
-      input2: ['', Validators.required]
+      input2: ['', Validators.required, this.pendingSimulator],
+      input3: ['', Validators.required],
     });
 
     this.subscription.add(
@@ -49,7 +50,11 @@ export class FormTestComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  formSend(event): void {
-    const a = event;
+  formSend(): void {
+    const a = 5;
+  }
+
+  pendingSimulator(control: AbstractControl): Observable<ValidationErrors | null> {
+    return of(null).pipe(delay(4000));
   }
 }

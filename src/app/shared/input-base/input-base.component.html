@@ -1,6 +1,6 @@
-<div>
-    <label [formGroup]="formGroup">
-        {{ label }}
-        <input type="{{ type }}" formControlName="{{ controlName }}" maxlength="{{ maxLength }}">
+<div [formGroup]="formGroup" class="container">
+    <label for="{{ id }}">{{ label }}
     </label>
+    <input id="{{ id }}" formControlName="{{ controlName }}" maxlength="{{ maxLength }}">
+    <div *ngIf="status === 'PENDING'" class="loader"></div>
 </div>
