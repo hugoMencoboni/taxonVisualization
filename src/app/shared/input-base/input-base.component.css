@@ -4,6 +4,10 @@
     grid-template-columns: repeat(2, 1fr) 10px;
 }
 
+input {
+    padding-left: 5px;
+}
+
 .loader {
     position: relative;
     left: -20px;

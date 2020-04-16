@@ -24,6 +24,7 @@ export class FormTestComponent implements OnInit, OnDestroy {
       input: ['', Validators.required],
       input2: ['', Validators.required, this.pendingSimulator],
       input3: ['', Validators.required],
+      input4: ['', Validators.required],
     });
 
     this.subscription.add(
@@ -38,10 +39,12 @@ export class FormTestComponent implements OnInit, OnDestroy {
           }
         });
 
-        this.lastChange = {
-          formName: keyChanged,
-          value: valueChanged
-        };
+        if (keyChanged) {
+          this.lastChange = {
+            formName: keyChanged,
+            value: valueChanged
+          };
+        }
       })
     );
   }
