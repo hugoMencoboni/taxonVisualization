@@ -1,5 +1,5 @@
 <div class="container">
-    <label for="{{ id }}">{{ label }}
+    <label for="{{ id }}">{{ label }}<label *ngIf="required" class="required">*</label>
     </label>
     <input id="{{ id }}" [formControl]="control" maxlength="{{ maxLength }}" [textMask]="{mask: mask}"
         placeholder="{{ placeholder}}">

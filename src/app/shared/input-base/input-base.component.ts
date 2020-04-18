@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { AbstractControl, FormControl } from '@angular/forms';
 import { conformToMask } from 'angular2-text-mask';
 import { Subscription } from 'rxjs';
 
@@ -35,6 +35,8 @@ export class InputBaseComponent implements OnInit, OnDestroy {
       );
     }
 
+    this.defineIfRequired();
+
     if (!this.mask) {
       this.defineMask();
     }
@@ -44,7 +46,7 @@ export class InputBaseComponent implements OnInit, OnDestroy {
     this.subsriptions.unsubscribe();
   }
 
-  defineMask(): void {
+  private defineMask(): void {
     switch (this.type) {
       case 'date': {
         this.mask = [/[0-3]/, /\d/, '-', /[0-1]/, /\d/, '-', /[1-2]/, /\d/, /\d/, /\d/];
@@ -59,7 +61,7 @@ export class InputBaseComponent implements OnInit, OnDestroy {
     }
   }
 
-  maskFormatedValue(valueToFormate: string): string {
+  private maskFormatedValue(valueToFormate: string): string {
     let formatedValue: any;
 
     try {
@@ -73,5 +75,14 @@ export class InputBaseComponent implements OnInit, OnDestroy {
     }
 
     return formatedValue ? formatedValue.conformedValue : undefined;
+  }
+
+  private defineIfRequired(): void {
+    if (this.control && this.control.validator) {
+      const validator = this.control.validator({} as AbstractControl);
+      if (validator && validator.required) {
+        this.required = true;
+      }
+    }
   }
 }
