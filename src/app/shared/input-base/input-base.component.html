@@ -3,9 +3,9 @@
         <label class="required">{{ required ? '*' : '&nbsp;&nbsp;' }}</label>
     </label>
     <mat-form-field floatLabel="never">
-        <input matInput id="{{ id }}" [formControl]="control" [maxlength]="maxLength" [textMask]="{mask: mask}"
-            [placeholder]="placeholder">
+        <input matInput id="{{ id }}" [formControl]="control" [type]="type" [maxlength]="maxLength"
+            [textMask]="{mask: mask}" [placeholder]="placeholder">
         <mat-error *ngIf="control.invalid" [innerHTML]="getErrorMessage()"></mat-error>
     </mat-form-field>
-    <div *ngIf="status === 'PENDING'" class="loader"></div>
+    <div *ngIf="status === 'PENDING'" class='loader' [ngClass]="{'shifted': type === 'date'}"></div>
 </div>

@@ -29,7 +29,7 @@ export class FormTestComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       input: ['', Validators.required],
       input2: ['', Validators.required, [this.pendingSimulator5Char, this.pendingSimulator6Char]],
-      input3: [''],
+      input3: ['2020-04-16', undefined, this.pendingSimulator5Char],
       input4: ['', Validators.required],
     });
 

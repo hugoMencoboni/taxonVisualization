@@ -54,11 +54,6 @@ export class InputBaseComponent implements OnInit, OnDestroy {
 
   private defineMask(): void {
     switch (this.type) {
-      case 'date': {
-        this.mask = [/[0-3]/, /\d/, '-', /[0-1]/, /\d/, '-', /[1-2]/, /\d/, /\d/, /\d/];
-        this.placeholder = !this.placeholder ? this.maskFormatedValue('31101985') : this.placeholder;
-        break;
-      }
       case 'telephone': {
         this.mask = ['(', '+', /\d/, /\d/, ')', /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/];
         this.placeholder = !this.placeholder ? this.maskFormatedValue('33100000000') : this.placeholder;

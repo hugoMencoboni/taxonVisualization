@@ -1,8 +1,9 @@
 <div [formGroup]="form">
-    <base-input [label]="'input simple'" [control]="form.controls.input"></base-input>
+    <base-input [label]="'input simple'" [control]="form.controls.input" [errorList]="errorList"></base-input>
     <base-input [label]="'Validateur async'" [control]="form.controls.input2" [errorList]="errorList"></base-input>
-    <base-input [label]="'Date'" [control]="form.controls.input3" [type]="'date'"></base-input>
-    <base-input [label]="'Téléphone'" [control]="form.controls.input4" [type]="'telephone'"></base-input>
+    <base-input [label]="'Date'" [control]="form.controls.input3" [type]="'date'" [errorList]="errorList"></base-input>
+    <base-input [label]="'Téléphone'" [control]="form.controls.input4" [type]="'telephone'" [errorList]="errorList">
+    </base-input>
 
     <div *ngIf="lastChange">
         <h3> Dernière modification :</h3>
