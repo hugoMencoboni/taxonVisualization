@@ -3,13 +3,18 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr) 10px;
 
+    .label {
+        text-align: end;
+        padding-right: 10px;
+
+        .required {
+            color: #c80606;
+        }
+    }
+
     input {
         padding-left: 5px;
-    }
-    
-    .required {
-        color: #c80606;
-    }
+    }    
     
     .loader {
         position: relative;
