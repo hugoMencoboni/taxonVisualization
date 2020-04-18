@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'base-input',
   templateUrl: './input-base.component.html',
-  styleUrls: ['./input-base.component.css']
+  styleUrls: ['./input-base.component.scss']
 })
 export class InputBaseComponent implements OnInit, OnDestroy {
 

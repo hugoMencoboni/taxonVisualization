@@ -6,7 +6,7 @@ import { delay, pairwise, startWith } from 'rxjs/operators';
 @Component({
   selector: 'base-form-test',
   templateUrl: './form-test.component.html',
-  styleUrls: ['./form-test.component.css']
+  styleUrls: ['./form-test.component.scss']
 })
 export class FormTestComponent implements OnInit, OnDestroy {
 
