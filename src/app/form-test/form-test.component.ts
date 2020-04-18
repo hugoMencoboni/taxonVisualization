@@ -27,10 +27,10 @@ export class FormTestComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      input: ['', Validators.required],
-      input2: ['', Validators.required, [this.pendingSimulator5Char, this.pendingSimulator6Char]],
-      input3: ['2020-04-16', undefined, this.pendingSimulator5Char],
-      input4: ['', Validators.required],
+      base: ['', Validators.required],
+      async: ['', Validators.required, [this.pendingSimulator5Char, this.pendingSimulator6Char]],
+      date: ['2020-04-16', undefined, this.pendingSimulator5Char],
+      telephone: ['', Validators.required],
     });
 
     this.subscription.add(
