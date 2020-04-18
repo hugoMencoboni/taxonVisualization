@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { conformToMask } from 'angular2-text-mask';
 import { Subscription } from 'rxjs';
 
@@ -11,8 +11,7 @@ import { Subscription } from 'rxjs';
 export class InputBaseComponent implements OnInit, OnDestroy {
 
   @Input() label: string;
-  @Input() formGroup: FormGroup;
-  @Input() controlName: string;
+  @Input() control: FormControl;
   @Input() maxLength: number | undefined = undefined;
   @Input() type = 'text';
   @Input() showStatus: 'onPending' | 'none' = 'onPending';
@@ -28,12 +27,11 @@ export class InputBaseComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit(): void {
-    this.id = `${this.controlName}-${Math.random().toString(36).substring(8)}`;
+    this.id = `${Math.random().toString(36).substring(9)}-${Math.random().toString(36).substring(9)}`;
 
     if (this.showStatus !== 'none') {
-      const control = this.formGroup.get(this.controlName);
       this.subsriptions.add(
-        control.statusChanges.subscribe(status => this.status = status)
+        this.control.statusChanges.subscribe(status => this.status = status)
       );
     }
 
