@@ -1,11 +1,13 @@
 .container {
     width: fit-content;
     display: grid;
+    align-items: baseline;
     grid-template-columns: repeat(2, 1fr) 10px;
 
     .label {
         text-align: end;
         padding-right: 10px;
+        padding-bottom: 7px;
 
         .required {
             color: #c80606;
@@ -19,6 +21,7 @@
     .loader {
         position: relative;
         left: -20px;
+        bottom: 4px;
         align-self: center;
         border: 2px solid #f3f3f3;
         border-top: 2px solid orange;

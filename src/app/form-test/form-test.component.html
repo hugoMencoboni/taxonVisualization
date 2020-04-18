@@ -4,11 +4,8 @@
     <base-input [label]="'Date'" [control]="form.controls.input3" [type]="'date'"></base-input>
     <base-input [label]="'Téléphone'" [control]="form.controls.input4" [type]="'telephone'"></base-input>
 
-    <hr />
-
     <div *ngIf="lastChange">
         <h3> Dernière modification :</h3>
         <div>{{lastChangeFormated}}</div>
     </div>
-    <button (click)="formSend()">Send</button>
 </div>

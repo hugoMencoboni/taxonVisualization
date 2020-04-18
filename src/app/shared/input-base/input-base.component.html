@@ -2,7 +2,9 @@
     <label for="{{ id }}" class="label">{{ label }}
         <label class="required">{{ required ? '*' : '&nbsp;&nbsp;' }}</label>
     </label>
-    <input id="{{ id }}" [formControl]="control" maxlength="{{ maxLength }}" [textMask]="{mask: mask}"
-        placeholder="{{ placeholder}}">
+    <mat-form-field floatLabel="never">
+        <input matInput id="{{ id }}" [formControl]="control" [maxlength]="maxLength" [textMask]="{mask: mask}"
+            [placeholder]="placeholder">
+    </mat-form-field>
     <div *ngIf="status === 'PENDING'" class="loader"></div>
 </div>
