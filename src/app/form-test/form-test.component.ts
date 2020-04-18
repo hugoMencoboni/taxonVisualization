@@ -31,6 +31,7 @@ export class FormTestComponent implements OnInit, OnDestroy {
       async: ['', Validators.required, [this.pendingSimulator5Char, this.pendingSimulator6Char]],
       date: ['2020-04-16', undefined, this.pendingSimulator5Char],
       telephone: ['', Validators.required],
+      textarea: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', Validators.required],
     });
 
     this.subscription.add(

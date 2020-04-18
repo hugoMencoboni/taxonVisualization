@@ -2,10 +2,16 @@
     <label for="{{ id }}" class="label">{{ label }}
         <label class="required">{{ required ? '*' : '&nbsp;&nbsp;' }}</label>
     </label>
-    <mat-form-field floatLabel="never">
-        <input matInput id="{{ id }}" [formControl]="control" [type]="type" [maxlength]="maxLength"
-            [textMask]="{mask: mask}" [placeholder]="placeholder">
+    <mat-form-field floatLabel="never" dividerColor="warn">
+        <input *ngIf="type !== 'textarea'" matInput id="{{ id }}" [formControl]="control" [type]="type"
+            [maxlength]="maxLength" [textMask]="{mask: mask}" [placeholder]="placeholder">
+
+        <textarea *ngIf="type === 'textarea'" matInput id="{{ id }}" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+            [formControl]="control" [type]="type" [maxlength]="maxLength" [placeholder]="placeholder"></textarea>
+
         <mat-error *ngIf="control.invalid" [innerHTML]="getErrorMessage()"></mat-error>
     </mat-form-field>
+
+
     <div *ngIf="status === 'PENDING'" class='loader' [ngClass]="{'shifted': type === 'date'}"></div>
 </div>

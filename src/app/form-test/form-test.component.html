@@ -4,6 +4,8 @@
     <base-input [label]="'Date'" [control]="form.controls.date" [type]="'date'" [errorList]="errorList"></base-input>
     <base-input [label]="'Téléphone'" [control]="form.controls.telephone" [type]="'telephone'" [errorList]="errorList">
     </base-input>
+    <base-input [label]="'text long'" [control]="form.controls.textarea" [type]="'textarea'" [errorList]="errorList">
+    </base-input>
 
     <div *ngIf="lastChange">
         <h3> Dernière modification :</h3>
