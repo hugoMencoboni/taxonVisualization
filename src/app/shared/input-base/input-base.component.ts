@@ -12,6 +12,7 @@ export class InputBaseComponent implements OnInit, OnDestroy {
 
   @Input() label: string;
   @Input() control: FormControl;
+  @Input() errorList = new Array<{ code: string, message: string }>();
   @Input() maxLength: number | undefined = undefined;
   @Input() type = 'text';
   @Input() showStatus: 'onPending' | 'none' = 'onPending';
@@ -44,6 +45,11 @@ export class InputBaseComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subsriptions.unsubscribe();
+  }
+
+  getErrorMessage(): string {
+    const errors = this.errorList.filter((err: { code: string, message: string }) => this.control.hasError(err.code));
+    return errors ? errors.map(err => err.message).join('<br>') : '';
   }
 
   private defineMask(): void {
