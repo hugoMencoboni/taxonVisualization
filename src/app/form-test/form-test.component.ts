@@ -20,7 +20,8 @@ export class FormTestComponent implements OnInit, OnDestroy {
   errorList = [
     { code: 'required', message: 'Ce champ est obligatoir.' },
     { code: 'asyncError5Char', message: 'Erreur asynchrone 5 char.' },
-    { code: 'asyncError6Char', message: 'Erreur asynchrone 6 char.' }
+    { code: 'asyncError6Char', message: 'Erreur asynchrone 6 char.' },
+    { code: 'asyncErrorDate', message: 'Erreur date async > au jour.' }
   ];
 
   constructor(private fb: FormBuilder) { }
@@ -29,7 +30,7 @@ export class FormTestComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       base: ['', Validators.required],
       async: ['', Validators.required, [this.pendingSimulator5Char, this.pendingSimulator6Char]],
-      date: ['2020-04-16', undefined, this.pendingSimulator5Char],
+      date: ['', undefined, this.pendingSimulatorDate],
       telephone: ['', Validators.required],
       textarea: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', Validators.required],
     });
@@ -78,6 +79,16 @@ export class FormTestComponent implements OnInit, OnDestroy {
     return of(null).pipe(delay(4000), map(() => {
       if (control.value && control.value.length > 5) {
         return { asyncError6Char: true };
+      }
+
+      return null;
+    }));
+  }
+
+  pendingSimulatorDate(control: AbstractControl): Observable<ValidationErrors | null> {
+    return of(null).pipe(delay(4000), map(() => {
+      if (control.value && (control.value as Date) > new Date()) {
+        return { asyncErrorDate: true };
       }
 
       return null;

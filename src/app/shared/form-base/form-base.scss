@@ -1,5 +1,5 @@
 .container {
-    width: fit-content;
+    max-width: 500px;
     display: grid;
     align-items: baseline;
     grid-template-columns: repeat(2, 1fr) 10px;

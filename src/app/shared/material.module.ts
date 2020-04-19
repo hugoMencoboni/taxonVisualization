@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -18,7 +19,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
     providers: [
-        { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' },
+        { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }
     ],
     imports: [
         MatAutocompleteModule,
@@ -36,6 +37,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         MatTabsModule,
         MatToolbarModule,
         MatTooltipModule,
+        MatNativeDateModule,
+        MatMomentDateModule,
     ],
     exports: [
         MatAutocompleteModule,
@@ -53,6 +56,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         MatTabsModule,
         MatToolbarModule,
         MatTooltipModule,
+        MatNativeDateModule,
+        MatMomentDateModule,
     ]
 })
 export class MaterialModule { }

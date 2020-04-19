@@ -1,23 +1,38 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
-import { conformToMask } from 'angular2-text-mask';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { Subscription } from 'rxjs';
 
+export const DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
+
 @Component({
-  selector: 'base-input',
-  templateUrl: './input-base.component.html',
-  styleUrls: ['./input-base.component.scss']
+  selector: 'base-date',
+  templateUrl: './date-base.component.html',
+  styleUrls: ['../form-base.scss', './date-base.component.scss'],
+  providers: [
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { strict: true } },
+    { provide: MAT_DATE_FORMATS, useValue: DATE_FORMATS },
+  ],
 })
-export class InputBaseComponent implements OnInit, OnDestroy {
+export class DateBaseComponent implements OnInit, OnDestroy {
 
   @Input() label: string;
   @Input() control: FormControl;
   @Input() errorList = new Array<{ code: string, message: string }>();
-  @Input() maxLength: number | undefined = undefined;
-  @Input() type = 'text';
   @Input() showStatus: 'onPending' | 'none' = 'onPending';
-  @Input() mask: Array<string | RegExp> | false = false;
-  @Input() placeholder = '';
+  @Input() placeholder = 'jj/mm/aaaa';
 
   required: boolean;
   status: string;
@@ -37,10 +52,6 @@ export class InputBaseComponent implements OnInit, OnDestroy {
     }
 
     this.defineIfRequired();
-
-    if (!this.mask) {
-      this.defineMask();
-    }
   }
 
   ngOnDestroy(): void {
@@ -50,32 +61,6 @@ export class InputBaseComponent implements OnInit, OnDestroy {
   getErrorMessage(): string {
     const errors = this.errorList.filter((err: { code: string, message: string }) => this.control.hasError(err.code));
     return errors ? errors.map(err => err.message).join('<br>') : '';
-  }
-
-  private defineMask(): void {
-    switch (this.type) {
-      case 'telephone': {
-        this.mask = ['(', '+', /\d/, /\d/, ')', /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/];
-        this.placeholder = !this.placeholder ? this.maskFormatedValue('33100000000') : this.placeholder;
-        break;
-      }
-    }
-  }
-
-  private maskFormatedValue(valueToFormate: string): string {
-    let formatedValue: any;
-
-    try {
-      formatedValue = conformToMask(
-        valueToFormate,
-        this.mask,
-        { guide: false }
-      );
-    } catch (err) {
-      console.error(err);
-    }
-
-    return formatedValue ? formatedValue.conformedValue : undefined;
   }
 
   private defineIfRequired(): void {
