@@ -1,0 +1,18 @@
+<div class="container">
+    <label (click)="focus()" class="label">{{ label }}
+        <label class="required">{{ required ? '*' : '&nbsp;&nbsp;' }}</label>
+    </label>
+
+    <mat-form-field floatLabel="never">
+        <mat-select #select [formControl]="control" [multiple]="selectMany">
+            <mat-option *ngIf="emptyOptionEnable && !selectMany ">{{ emptyOptionText }}</mat-option>
+            <mat-option *ngFor="let option of options" [value]="option[valueProperty]">
+                {{ option[displayedProperty] }}
+            </mat-option>
+        </mat-select>
+
+        <mat-error *ngIf="control.invalid" [innerHTML]="getErrorMessage()"></mat-error>
+    </mat-form-field>
+
+    <div *ngIf="status === 'PENDING'" class='loader'></div>
+</div>

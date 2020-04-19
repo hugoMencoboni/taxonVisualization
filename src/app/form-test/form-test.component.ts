@@ -24,6 +24,8 @@ export class FormTestComponent implements OnInit, OnDestroy {
     { code: 'asyncErrorDate', message: 'Erreur date async > au jour.' }
   ];
 
+  selectOptionList = [{ id: 1, label: 'Option 1' }, { id: 2, label: 'Option 2' }];
+
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -33,6 +35,8 @@ export class FormTestComponent implements OnInit, OnDestroy {
       date: ['', undefined, this.pendingSimulatorDate],
       telephone: ['', Validators.required],
       textarea: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', Validators.required],
+      select: ['', Validators.required],
+      selectMultiple: ['', Validators.required],
     });
 
     this.subscription.add(
@@ -59,10 +63,6 @@ export class FormTestComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
-  }
-
-  formSend(): void {
-    const a = 5;
   }
 
   pendingSimulator5Char(control: AbstractControl): Observable<ValidationErrors | null> {

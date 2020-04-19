@@ -6,6 +6,10 @@
     </base-input>
     <base-input [label]="'text long'" [control]="form.controls.textarea" [type]="'textarea'" [errorList]="errorList">
     </base-input>
+    <base-select [label]="'combo box'" [control]="form.controls.select" [options]="selectOptionList"
+        [errorList]="errorList"></base-select>
+    <base-select [label]="'combo box multiple'" [control]="form.controls.selectMultiple" [options]="selectOptionList"
+        [selectMany]="'true'" [errorList]="errorList"></base-select>
 
     <div *ngIf="lastChange">
         <h3> Dernière modification :</h3>
