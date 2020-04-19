@@ -2,16 +2,25 @@
     <label for="{{ id }}" class="label">{{ label }}
         <label class="required">{{ required ? '*' : '&nbsp;&nbsp;' }}</label>
     </label>
-    <mat-form-field floatLabel="never">
-        <input *ngIf="type !== 'textarea' && type !== 'date'" matInput id="{{ id }}" [formControl]="control"
-            [type]="type" [maxlength]="maxLength" [textMask]="{mask: mask}" [placeholder]="placeholder">
 
-        <textarea *ngIf="type === 'textarea'" matInput id="{{ id }}" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
-            [formControl]="control" [type]="type" [maxlength]="maxLength" [placeholder]="placeholder"></textarea>
+    <!-- Inputs -->
+    <ng-container *ngIf="type !== 'textarea'">
+        <mat-form-field floatLabel="never">
+            <input matInput id="{{ id }}" [formControl]="control" [type]="type" [maxlength]="maxLength"
+                [textMask]="{mask: mask}" [placeholder]="placeholder">
 
-        <mat-error *ngIf="control.invalid" [innerHTML]="getErrorMessage()"></mat-error>
-    </mat-form-field>
+            <mat-error *ngIf="control.invalid" [innerHTML]="getErrorMessage()"></mat-error>
+        </mat-form-field>
+    </ng-container>
 
+    <!-- TextAreas -->
+    <ng-container *ngIf="type === 'textarea'">
+        <mat-form-field floatLabel="never">
+            <textarea matInput id="{{ id }}" cdkTextareaAutosize #autosize="cdkTextareaAutosize" [formControl]="control"
+                [type]="type" [maxlength]="maxLength" [placeholder]="placeholder"></textarea>
 
+            <mat-error *ngIf="control.invalid" [innerHTML]="getErrorMessage()"></mat-error>
+        </mat-form-field>
+    </ng-container>
     <div *ngIf="status === 'PENDING'" class='loader'></div>
 </div>

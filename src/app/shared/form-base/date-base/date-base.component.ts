@@ -1,8 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { Subscription } from 'rxjs';
+import { ValidationHelper } from '../../../core/validators/validation.helper';
 
 export const DATE_FORMATS = {
   parse: {
@@ -51,7 +52,7 @@ export class DateBaseComponent implements OnInit, OnDestroy {
       );
     }
 
-    this.defineIfRequired();
+    this.required = ValidationHelper.isRequired(this.control);
   }
 
   ngOnDestroy(): void {
@@ -59,16 +60,6 @@ export class DateBaseComponent implements OnInit, OnDestroy {
   }
 
   getErrorMessage(): string {
-    const errors = this.errorList.filter((err: { code: string, message: string }) => this.control.hasError(err.code));
-    return errors ? errors.map(err => err.message).join('<br>') : '';
-  }
-
-  private defineIfRequired(): void {
-    if (this.control && this.control.validator) {
-      const validator = this.control.validator({} as AbstractControl);
-      if (validator && validator.required) {
-        this.required = true;
-      }
-    }
+    return ValidationHelper.getErrorMessage(this.control, this.errorList);
   }
 }

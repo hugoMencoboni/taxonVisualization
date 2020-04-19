@@ -2,6 +2,7 @@
     <label for="{{ id }}" class="label">{{ label }}
         <label class="required">{{ required ? '*' : '&nbsp;&nbsp;' }}</label>
     </label>
+
     <mat-form-field floatLabel="never">
         <input matInput id="{{ id }}" [formControl]="control" [placeholder]="placeholder" [matDatepicker]="datepicker">
         <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
@@ -10,5 +11,5 @@
         <mat-error *ngIf="control.invalid" [innerHTML]="getErrorMessage()"></mat-error>
     </mat-form-field>
 
-    <div *ngIf="status === 'PENDING'" class='loader shifted'></div>
+    <div *ngIf="status === 'PENDING'" class='loader'></div>
 </div>

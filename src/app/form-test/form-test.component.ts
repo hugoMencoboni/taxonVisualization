@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Observable, of, Subscription } from 'rxjs';
 import { delay, map, pairwise, startWith } from 'rxjs/operators';
+import { ErrorInfo } from '../core/models/errorInfo';
 
 @Component({
   selector: 'base-form-test',
@@ -17,7 +18,7 @@ export class FormTestComponent implements OnInit, OnDestroy {
     return this.lastChange ? `${this.lastChange.formName} : ${this.lastChange.value}` : '';
   }
 
-  errorList = [
+  errorList: Array<ErrorInfo> = [
     { code: 'required', message: 'Ce champ est obligatoir.' },
     { code: 'asyncError5Char', message: 'Erreur asynchrone 5 char.' },
     { code: 'asyncError6Char', message: 'Erreur asynchrone 6 char.' },

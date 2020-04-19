@@ -1,7 +1,8 @@
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormControl } from '@angular/forms';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { conformToMask } from 'angular2-text-mask';
 import { Subscription } from 'rxjs';
+import { ValidationHelper } from 'src/app/core/validators/validation.helper';
 
 @Component({
   selector: 'base-input',
@@ -25,7 +26,7 @@ export class InputBaseComponent implements OnInit, OnDestroy {
 
   subsriptions = new Subscription();
 
-  constructor(private cdRef: ChangeDetectorRef) { }
+  constructor() { }
 
   ngOnInit(): void {
     this.id = `${Math.random().toString(36).substring(9)}-${Math.random().toString(36).substring(9)}`;
@@ -36,7 +37,7 @@ export class InputBaseComponent implements OnInit, OnDestroy {
       );
     }
 
-    this.defineIfRequired();
+    this.required = ValidationHelper.isRequired(this.control);
 
     if (!this.mask) {
       this.defineMask();
@@ -48,8 +49,7 @@ export class InputBaseComponent implements OnInit, OnDestroy {
   }
 
   getErrorMessage(): string {
-    const errors = this.errorList.filter((err: { code: string, message: string }) => this.control.hasError(err.code));
-    return errors ? errors.map(err => err.message).join('<br>') : '';
+    return ValidationHelper.getErrorMessage(this.control, this.errorList);
   }
 
   private defineMask(): void {
@@ -76,14 +76,5 @@ export class InputBaseComponent implements OnInit, OnDestroy {
     }
 
     return formatedValue ? formatedValue.conformedValue : undefined;
-  }
-
-  private defineIfRequired(): void {
-    if (this.control && this.control.validator) {
-      const validator = this.control.validator({} as AbstractControl);
-      if (validator && validator.required) {
-        this.required = true;
-      }
-    }
   }
 }

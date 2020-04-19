@@ -1,7 +1,8 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
 import { Subscription } from 'rxjs';
+import { ValidationHelper } from 'src/app/core/validators/validation.helper';
 
 @Component({
   selector: 'base-select',
@@ -37,7 +38,7 @@ export class SelectBaseComponent implements OnInit, OnDestroy {
       );
     }
 
-    this.defineIfRequired();
+    this.required = ValidationHelper.isRequired(this.control);
   }
 
   ngOnDestroy(): void {
@@ -45,20 +46,10 @@ export class SelectBaseComponent implements OnInit, OnDestroy {
   }
 
   getErrorMessage(): string {
-    const errors = this.errorList.filter((err: { code: string, message: string }) => this.control.hasError(err.code));
-    return errors ? errors.map(err => err.message).join('<br>') : '';
+    return ValidationHelper.getErrorMessage(this.control, this.errorList);
   }
 
   focus(): void {
     this.selectElmt.focus();
-  }
-
-  private defineIfRequired(): void {
-    if (this.control && this.control.validator) {
-      const validator = this.control.validator({} as AbstractControl);
-      if (validator && validator.required) {
-        this.required = true;
-      }
-    }
   }
 }
