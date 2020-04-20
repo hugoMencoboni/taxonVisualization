@@ -38,6 +38,7 @@ export class FormTestComponent implements OnInit, OnDestroy {
       textarea: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', Validators.required],
       select: ['', Validators.required],
       selectMultiple: ['', Validators.required],
+      autocomplete: ['', Validators.required],
     });
 
     this.subscription.add(
@@ -94,5 +95,33 @@ export class FormTestComponent implements OnInit, OnDestroy {
 
       return null;
     }));
+  }
+
+  autocompleteCallback(searchPattern: string): Observable<Array<any>> {
+    const opts = [{ id: 1, label: 'One' },
+    { id: 2, label: 'Two' },
+    { id: 3, label: 'Three' },
+    { id: 4, label: 'For' },
+    { id: 5, label: 'Five' },
+    { id: 6, label: 'Six' },
+    { id: 7, label: 'Seven' },
+    { id: 8, label: 'Eight' },
+    { id: 9, label: 'Nine' },
+    { id: 10, label: 'Ten' },
+    { id: 11, label: 'Eleven' },
+    { id: 12, label: 'Twelve' },
+    { id: 13, label: 'Thirteen' },
+    { id: 14, label: 'Fourteen' },
+    { id: 15, label: 'Fifteen' },
+    { id: 16, label: 'Sixteen' },
+    { id: 17, label: 'Seventeen' },
+    { id: 18, label: 'Eighteen' },
+    { id: 19, label: 'Nineteen' },
+    { id: 20, label: 'Twenty' }];
+
+    return of(opts).pipe(
+      delay(800),
+      map(options => options.filter(opt => opt.label && opt.label.toLowerCase().includes(searchPattern.toLowerCase())))
+    );
   }
 }

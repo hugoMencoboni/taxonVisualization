@@ -1,0 +1,25 @@
+<div class="container">
+    <label for="{{ id }}" class="label">{{ label }}
+        <label class="required">{{ required ? '*' : '&nbsp;&nbsp;' }}</label>
+    </label>
+
+    <mat-form-field floatLabel="never">
+        <input matInput id="{{ id }}" [formControl]="internalControl" [matAutocomplete]="auto" [maxlength]="maxLength"
+            [placeholder]="placeholder" (focus)="onFocus()">
+
+        <mat-error *ngIf="internalControl.hasError('mustSelecteElement')">Veuillez selectionner un élément dans la
+            liste.
+        </mat-error>
+        <mat-error *ngIf="internalControl.invalid && !internalControl.hasError('mustSelecteElement')"
+            [innerHTML]="getErrorMessage()">
+        </mat-error>
+    </mat-form-field>
+
+    <div *ngIf="pending" class='loader'></div>
+
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)" autoActiveFirstOption>
+        <mat-option *ngFor="let option of filteredOptions$ | async" [value]="option">
+            {{ option?.data[displayedProperty] }}
+        </mat-option>
+    </mat-autocomplete>
+</div>
