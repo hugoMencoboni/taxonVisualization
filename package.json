@@ -14,6 +14,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "npm run checkCommitMsg $HUSKY_GIT_PARAMS && git-precommit-checks",
+      "pre-commit": "tslint-staged",
       "pre-push": "npm run lint"
     }
   },
@@ -24,6 +25,13 @@
         "regex": "/^[<>|=]{4,}/m"
       }
     ]
+  },
+  "tslintStaged": {
+    "tslintConfig": "tslint.json",
+    "include": [
+      "**/*.ts"
+    ],
+    "exclude": []
   },
   "dependencies": {
     "@angular/animations": "~9.1.1",
@@ -64,6 +72,7 @@
     "protractor": "~5.4.3",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
+    "tslint-staged": "~0.1.2",
     "typescript": "~3.8.3"
   }
 }
