@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { FormTestComponent } from './form-test/form-test.component';
+import { AutocompleteModule } from './shared/form-base/autocomplete-base/autocomplete-base.component';
+import { DateModule } from './shared/form-base/date-base/date-base.component';
+import { InputModule } from './shared/form-base/input-base/input-base.component';
+import { SelectModule } from './shared/form-base/select-base/select-base.component';
 import { SharedModule } from './shared/shared.module';
 
 @NgModule({
@@ -13,10 +16,12 @@ import { SharedModule } from './shared/shared.module';
   ],
   imports: [
     BrowserModule,
-    FormsModule,
     ReactiveFormsModule,
+    InputModule,
+    AutocompleteModule,
+    DateModule,
+    SelectModule,
     SharedModule,
-    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

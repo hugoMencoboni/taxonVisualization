@@ -1,6 +1,9 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatSelect } from '@angular/material/select';
+import { CommonModule } from '@angular/common';
+import { Component, Input, NgModule, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelect, MatSelectModule } from '@angular/material/select';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Subscription } from 'rxjs';
 import { ValidationHelper } from 'src/app/core/validators/validation.helper';
 
@@ -53,3 +56,16 @@ export class SelectBaseComponent implements OnInit, OnDestroy {
     this.selectElmt.focus();
   }
 }
+
+@NgModule({
+  declarations: [SelectBaseComponent],
+  exports: [SelectBaseComponent],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    BrowserAnimationsModule,
+    MatSelectModule,
+    MatFormFieldModule
+  ],
+})
+export class SelectModule { }

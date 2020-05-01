@@ -1,7 +1,12 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { CommonModule } from '@angular/common';
+import { Component, Input, NgModule, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Subscription } from 'rxjs';
 import { ValidationHelper } from '../../../core/validators/validation.helper';
 
@@ -63,3 +68,22 @@ export class DateBaseComponent implements OnInit, OnDestroy {
     return ValidationHelper.getErrorMessage(this.control, this.errorList);
   }
 }
+
+@NgModule({
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }
+  ],
+  declarations: [DateBaseComponent],
+  exports: [DateBaseComponent],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatMomentDateModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
+})
+export class DateModule { }

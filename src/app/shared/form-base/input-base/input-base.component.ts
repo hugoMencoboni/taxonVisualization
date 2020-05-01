@@ -1,6 +1,10 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { conformToMask } from 'angular2-text-mask';
+import { CommonModule } from '@angular/common';
+import { Component, Input, NgModule, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { conformToMask, TextMaskModule } from 'angular2-text-mask';
 import { Subscription } from 'rxjs';
 import { ValidationHelper } from 'src/app/core/validators/validation.helper';
 
@@ -78,3 +82,17 @@ export class InputBaseComponent implements OnInit, OnDestroy {
     return formatedValue ? formatedValue.conformedValue : undefined;
   }
 }
+
+@NgModule({
+  declarations: [InputBaseComponent],
+  exports: [InputBaseComponent],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    BrowserAnimationsModule,
+    TextMaskModule,
+    MatInputModule,
+    MatFormFieldModule
+  ],
+})
+export class InputModule { }

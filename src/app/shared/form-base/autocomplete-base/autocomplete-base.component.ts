@@ -1,5 +1,10 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { FormControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Component, Input, NgModule, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { FormControl, ReactiveFormsModule, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { merge, Observable, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, filter, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { ValidationHelper } from 'src/app/core/validators/validation.helper';
@@ -161,3 +166,17 @@ class AutocompleteOption {
     }
     data: any;
 }
+
+@NgModule({
+    declarations: [AutoCompleteBaseComponent],
+    exports: [AutoCompleteBaseComponent],
+    imports: [
+        ReactiveFormsModule,
+        CommonModule,
+        BrowserAnimationsModule,
+        MatAutocompleteModule,
+        MatInputModule,
+        MatFormFieldModule
+    ],
+})
+export class AutocompleteModule { }
