@@ -1,5 +1,15 @@
-.bloc {
-    border: #007bd2 1px solid;
-    border-radius: 3px;
-    padding: 10px;
+.app-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+        "header"
+        "content";
+}
+
+.header {
+    grid-area: header;
+}
+
+.content {
+    grid-area: content;
 }
