@@ -21,11 +21,22 @@
 
     <base-input [label]="'Medias'" [control]="form.controls.media" (inputBlur)="getMedia()"></base-input>
 </div>
-<button (click)="deplace()">move</button>
+<div class="actions">
+    <button (click)="create()" style="grid-area: 'add';">create more</button>
+    <button (click)="moveUp()" style="grid-area: 'north';">move up</button>
+    <button (click)="moveLeft()" style="grid-area: 'east';">move left</button>
+    <button (click)="moveRigth()" style="grid-area: 'west';">move rigth</button>
+    <button (click)="moveDown()" style="grid-area: 'south';">move down</button>
+</div>
 <svg id="mainSvg" *ngIf="datas" preserveAspectRatio="xMinYMin meet">
     <!-- viewBox="0 0 500 500"-->
-    <g app-item-link [originX]="datas[0].x" [originY]="datas[0].y" [destinationX]="datas[1].x"
-        [destinationY]="datas[1].y"></g>
+    <ng-container *ngFor="let data of datas; let i = index">
+        <ng-container *ngIf="i + 1 < datas.length">
+            <g app-item-link [originX]="datas[i].x" [originY]="datas[i].y" [destinationX]="datas[i+1].x"
+                [destinationY]="datas[i+1].y"></g>
+        </ng-container>
+    </ng-container>
+
 
     <ng-container *ngFor="let data of datas">
         <g app-item [x]="data.x" [y]="data.y" [text]="data.text"></g>

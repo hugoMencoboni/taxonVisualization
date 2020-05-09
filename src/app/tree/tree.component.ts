@@ -16,14 +16,31 @@ export class TreeComponent implements OnInit, OnDestroy {
 
   dataTest: Taxa;
 
-  datas = [{ x: 250, y: 50, text: 'voici du text' },
-  { x: 550, y: 150, text: 'voici du text 2' },
+  datas = [{ x: 150, y: 50, text: 'voici du text' },
+  { x: 450, y: 150, text: 'voici du text 2' },
   ];
 
   constructor(private taxonApiService: TaxonApiService, private fb: FormBuilder) { }
 
-  deplace(): void {
-    this.datas[1].x += 100;
+  create(): void {
+    const lastData = this.datas[this.datas.length - 1];
+    this.datas.push({ x: lastData.x + 300, y: (1000 * (Math.random() - 0.5) + lastData.y), text: 'new one' });
+  }
+
+  moveRigth(): void {
+    this.datas.forEach(d => d.x -= 500);
+  }
+
+  moveLeft(): void {
+    this.datas.forEach(d => d.x += 500);
+  }
+
+  moveUp(): void {
+    this.datas.forEach(d => d.y += 300);
+  }
+
+  moveDown(): void {
+    this.datas.forEach(d => d.y -= 300);
   }
 
   ngOnInit(): void {

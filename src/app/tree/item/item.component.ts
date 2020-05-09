@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
 
 @Component({
@@ -19,6 +19,8 @@ export class ItemComponent implements OnChanges, AfterViewInit {
     @Input() width = 250;
 
     @Input() actif = false;
+
+    @Output() selected = new EventEmitter();
 
     selectColor = '#3974b3';
     textMargin = 20;
@@ -86,6 +88,7 @@ export class ItemComponent implements OnChanges, AfterViewInit {
             .on('click', () => {
                 this.actif = !this.actif;
                 this.statusChange();
+                this.selected.emit();
             });
 
         this.statusChange();
