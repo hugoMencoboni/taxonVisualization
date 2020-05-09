@@ -11,6 +11,7 @@ export class ItemComponent implements OnChanges, AfterViewInit {
     public itemContainer: ElementRef;
 
     @Input() text: string;
+    @Input() id: number;
 
     @Input() x: number;
     @Input() y: number;
@@ -20,9 +21,11 @@ export class ItemComponent implements OnChanges, AfterViewInit {
 
     @Input() actif = false;
 
-    @Output() selected = new EventEmitter();
+    @Output() selected = new EventEmitter<number>();
 
-    selectColor = '#3974b3';
+    activeColor = '#3974b3';
+    inactiveColor = '#bababa';
+
     textMargin = 20;
 
     private d3_rectangle;
@@ -65,7 +68,7 @@ export class ItemComponent implements OnChanges, AfterViewInit {
             .attr('rx', 10)
             .attr('ry', 10)
             .attr('width', this.width)
-            .attr('stroke', this.selectColor)
+            .attr('stroke', this.activeColor)
             .attr('stroke-width', 2)
             .attr('fill', 'white');
 
@@ -82,14 +85,10 @@ export class ItemComponent implements OnChanges, AfterViewInit {
             .attr('cx', this.x)
             .attr('cy', this.y)
             .attr('r', this.r)
-            .attr('stroke', 'black')
+            .attr('stroke', this.inactiveColor)
             .attr('stroke-width', 2)
             .attr('fill', 'white')
-            .on('click', () => {
-                this.actif = !this.actif;
-                this.statusChange();
-                this.selected.emit();
-            });
+            .on('click', () => this.selected.emit(this.id));
 
         this.statusChange();
         this.drawed = true;
@@ -100,7 +99,7 @@ export class ItemComponent implements OnChanges, AfterViewInit {
             this.d3_circle
                 .transition()
                 .duration(300)
-                .attr('stroke', this.selectColor);
+                .attr('stroke', this.activeColor);
             this.d3_rectangle
                 .transition()
                 .delay(300)
@@ -116,7 +115,7 @@ export class ItemComponent implements OnChanges, AfterViewInit {
                 .transition()
                 .delay(500)
                 .duration(300)
-                .attr('stroke', 'black');
+                .attr('stroke', this.inactiveColor);
             this.d3_rectangle
                 .transition()
                 .duration(500)

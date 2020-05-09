@@ -19,7 +19,7 @@ export class ItemLinkComponent implements OnChanges, AfterViewInit {
   @Input() actif = false;
 
   activeColor = '#3974b3';
-  inactiveColor = 'black';
+  inactiveColor = '#bababa';
 
   private d3_path;
   private drawed = false;

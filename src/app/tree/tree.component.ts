@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Taxa } from '../core/models/taxRef/taxa.model';
 import { TaxonApiService } from '../core/services/taxon.api.service';
@@ -8,7 +8,7 @@ import { TaxonApiService } from '../core/services/taxon.api.service';
   templateUrl: './tree.component.html',
   styleUrls: ['./tree.component.scss']
 })
-export class TreeComponent implements OnInit, OnDestroy {
+export class TreeComponent implements OnInit {
   nameData: Array<Taxa>;
   childrenData: Array<Taxa>;
   imageRefs: Array<string>;
@@ -16,15 +16,20 @@ export class TreeComponent implements OnInit, OnDestroy {
 
   dataTest: Taxa;
 
-  datas = [{ x: 150, y: 50, text: 'voici du text' },
-  { x: 450, y: 150, text: 'voici du text 2' },
+  datas = [{ id: Math.floor(Math.random() * 1000), x: 150, y: 50, text: 'voici du text', actif: false },
+  { id: Math.floor(Math.random() * 1000), x: 450, y: 150, text: 'voici du text 2', actif: false },
   ];
 
   constructor(private taxonApiService: TaxonApiService, private fb: FormBuilder) { }
 
   create(): void {
     const lastData = this.datas[this.datas.length - 1];
-    this.datas.push({ x: lastData.x + 300, y: (1000 * (Math.random() - 0.5) + lastData.y), text: 'new one' });
+    this.datas.push({
+      id: Math.floor(Math.random() * 1000),
+      x: lastData.x + 300, y: (1000 * (Math.random() - 0.5) + lastData.y),
+      text: 'new one',
+      actif: false
+    });
   }
 
   moveRigth(): void {
@@ -100,9 +105,6 @@ export class TreeComponent implements OnInit, OnDestroy {
     };
   }
 
-  ngOnDestroy(): void {
-  }
-
   getByName() {
     this.taxonApiService.getByName(this.form.controls.name.value).subscribe(data => {
       this.nameData = data;
@@ -119,5 +121,9 @@ export class TreeComponent implements OnInit, OnDestroy {
     this.taxonApiService.getMediaUrl(this.form.controls.media.value).subscribe(data => {
       this.imageRefs = data;
     });
+  }
+
+  onItemSelected(id: number): void {
+    this.datas.forEach(d => d.actif = d.id === id);
   }
 }
