@@ -1,0 +1,136 @@
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import * as d3 from 'd3';
+
+@Component({
+    selector: '[app-item]',
+    template: '<svg:g #itemContainer></g>',
+    styleUrls: ['./item.component.scss']
+})
+export class ItemComponent implements OnChanges, AfterViewInit {
+    @ViewChild('itemContainer')
+    public itemContainer: ElementRef;
+
+    @Input() text: string;
+
+    @Input() x: number;
+    @Input() y: number;
+    @Input() r = 40;
+
+    @Input() width = 250;
+
+    @Input() actif = false;
+
+    selectColor = '#3974b3';
+    textMargin = 20;
+
+    private d3_rectangle;
+    private d3_circle;
+    private d3_container;
+    private d3_text;
+
+    private drawed = false;
+
+    constructor() { }
+
+    ngAfterViewInit(): void {
+        this.draw();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (!this.drawed) { return; }
+
+        if (!changes.text) {
+            this.d3_text.html(this.text);
+        }
+
+        if (changes.actif) {
+            this.statusChange();
+        }
+
+        if (changes.x || changes.y || changes.r || changes.width) {
+            this.changePosition();
+        }
+    }
+
+    private draw(): void {
+        if (!this.itemContainer) { return; }
+
+        const element = this.itemContainer.nativeElement;
+
+        this.d3_rectangle = d3.select(element).append('rect')
+            .attr('x', this.x - this.width / 2)
+            .attr('y', this.y)
+            .attr('rx', 10)
+            .attr('ry', 10)
+            .attr('width', this.width)
+            .attr('stroke', this.selectColor)
+            .attr('stroke-width', 2)
+            .attr('fill', 'white');
+
+        this.d3_container = d3.select(element).append('foreignObject')
+            .attr('x', this.x - (this.width - this.textMargin) / 2)
+            .attr('y', this.y + this.r + this.textMargin / 2)
+            .attr('width', this.width - this.textMargin);
+
+        this.d3_text = this.d3_container
+            .append('xhtml:div')
+            .html(this.text)
+            .attr('fill', 'black');
+
+        this.d3_circle = d3.select(element).append('circle')
+            .attr('cx', this.x)
+            .attr('cy', this.y)
+            .attr('r', this.r)
+            .attr('stroke', 'black')
+            .attr('stroke-width', 2)
+            .attr('fill', 'white')
+            .on('click', () => {
+                this.actif = !this.actif;
+                this.statusChange();
+            });
+
+        this.statusChange();
+        this.drawed = true;
+    }
+
+    statusChange(): void {
+        if (this.actif) {
+            this.d3_circle.transition()
+                .duration(300)
+                .attr('stroke', this.selectColor);
+            this.d3_rectangle.transition()
+                .delay(300)
+                .duration(500)
+                .attr('height', 200);
+            this.d3_container.transition()
+                .delay(300)
+                .duration(500)
+                .attr('height', 200 - this.r - this.textMargin);
+        } else {
+            this.d3_circle.transition()
+                .delay(500)
+                .duration(300)
+                .attr('stroke', 'black');
+            this.d3_rectangle.transition()
+                .duration(500)
+                .attr('height', 0);
+            this.d3_container.transition()
+                .attr('height', 0);
+        }
+    }
+
+    changePosition(): void {
+        this.d3_rectangle.attr('x', this.x - this.width / 2)
+            .attr('y', this.y)
+            .attr('width', this.width);
+
+        this.d3_container.attr('x', this.x - (this.width - this.textMargin) / 2)
+            .attr('y', this.y + this.r + this.textMargin / 2)
+            .attr('width', this.width - this.textMargin);
+
+        this.d3_circle.attr('cx', this.x)
+            .attr('cy', this.y)
+            .attr('r', this.r);
+    }
+}
+

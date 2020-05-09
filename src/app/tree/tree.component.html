@@ -1,1 +1,40 @@
-<svg id="mainSvg"></svg>
+<div [formGroup]="form">
+    <base-input [label]="'Nom'" [control]="form.controls.name" (inputBlur)="getByName()"></base-input>
+    <ng-container *ngIf="nameData">
+        <div *ngFor="let taxa of nameData">
+            <div>id: {{ taxa.id }}</div>
+            <div>scientificName: {{ taxa.scientificName }}</div>
+            <div>frenchVernacularName: {{ taxa.frenchVernacularName }}</div>
+            <hr>
+        </div>
+    </ng-container>
+
+    <base-input [label]="'Enfants'" [control]="form.controls.children" (inputBlur)="getChildren()"></base-input>
+    <ng-container *ngIf="childrenData">
+        <div *ngFor="let taxa of childrenData">
+            <div>id: {{ taxa.id }}</div>
+            <div>scientificName: {{ taxa.scientificName }}</div>
+            <div>frenchVernacularName: {{ taxa.frenchVernacularName }}</div>
+            <hr>
+        </div>
+    </ng-container>
+
+    <base-input [label]="'Medias'" [control]="form.controls.media" (inputBlur)="getMedia()"></base-input>
+</div>
+
+<svg id="mainSvg" *ngIf="datas" preserveAspectRatio="xMinYMin meet">
+    <!-- viewBox="0 0 500 500"-->
+    <g app-item-link [originX]="datas[0].x" [originY]="datas[0].y" [destinationX]="datas[1].x"
+        [destinationY]="datas[1].y"></g>
+
+    <!--<line [attr.x1]="datas[0].x" [attr.y1]="datas[0].y" [attr.x2]="datas[1].x" [attr.y2]="datas[1].y"
+        style="stroke:rgb(255,0,0);stroke-width:2" />-->
+
+    <ng-container *ngFor="let data of datas">
+        <g app-item [x]="data.x" [y]="data.y" [text]="data.text"></g>
+    </ng-container>
+
+    <ng-container *ngFor="let imageRef of imageRefs; let index = index">
+        <image [attr.xlink:href]="imageRef" x="0" [attr.y]="index*400" height="50%" width="50%" />
+    </ng-container>
+</svg>

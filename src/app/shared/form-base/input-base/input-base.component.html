@@ -7,7 +7,7 @@
     <ng-container *ngIf="type !== 'textarea'">
         <mat-form-field floatLabel="never">
             <input matInput id="{{ id }}" [formControl]="control" [type]="type" [maxlength]="maxLength"
-                [textMask]="{mask: mask}" [placeholder]="placeholder">
+                [textMask]="{mask: mask}" [placeholder]="placeholder" (blur)="onBlur()">
 
             <mat-error *ngIf="control.invalid" [innerHTML]="getErrorMessage()"></mat-error>
         </mat-form-field>

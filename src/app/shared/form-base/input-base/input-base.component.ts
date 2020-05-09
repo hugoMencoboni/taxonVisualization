@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -28,6 +28,8 @@ export class InputBaseComponent implements OnInit, OnDestroy {
   status: string;
   id: string;
 
+  @Output() inputBlur = new EventEmitter();
+
   subsriptions = new Subscription();
 
   constructor() { }
@@ -54,6 +56,10 @@ export class InputBaseComponent implements OnInit, OnDestroy {
 
   getErrorMessage(): string {
     return ValidationHelper.getErrorMessage(this.control, this.errorList);
+  }
+
+  onBlur(): void {
+    this.inputBlur.emit();
   }
 
   private defineMask(): void {
