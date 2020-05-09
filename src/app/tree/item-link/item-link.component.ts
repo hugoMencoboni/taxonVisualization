@@ -50,8 +50,6 @@ export class ItemLinkComponent implements OnChanges, AfterViewInit {
     this.d3_path = d3.select(element).append('path')
       .attr('fill', 'none')
       .attr('stroke-width', 2)
-      .transition()
-      .duration(300)
       .attr('d', this.setLine().toString());
 
     this.statusChange();
@@ -60,11 +58,13 @@ export class ItemLinkComponent implements OnChanges, AfterViewInit {
 
   statusChange(): void {
     if (this.actif) {
-      this.d3_path.transition()
+      this.d3_path
+        .transition()
         .duration(300)
         .attr('stroke', this.activeColor);
     } else {
-      this.d3_path.transition()
+      this.d3_path
+        .transition()
         .delay(500)
         .duration(300)
         .attr('stroke', this.inactiveColor);
@@ -72,7 +72,10 @@ export class ItemLinkComponent implements OnChanges, AfterViewInit {
   }
 
   changePosition(): void {
-    this.d3_path.attr('d', this.setLine().toString());
+    this.d3_path
+      .transition()
+      .duration(750)
+      .attr('d', this.setLine().toString());
   }
 
   private setLine(): d3.Path {

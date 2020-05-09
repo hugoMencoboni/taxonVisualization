@@ -72,8 +72,7 @@ export class ItemComponent implements OnChanges, AfterViewInit {
             .attr('y', this.y + this.r + this.textMargin / 2)
             .attr('width', this.width - this.textMargin);
 
-        this.d3_text = this.d3_container
-            .append('xhtml:div')
+        this.d3_text = this.d3_container.append('xhtml:div')
             .html(this.text)
             .attr('fill', 'black');
 
@@ -95,40 +94,55 @@ export class ItemComponent implements OnChanges, AfterViewInit {
 
     statusChange(): void {
         if (this.actif) {
-            this.d3_circle.transition()
+            this.d3_circle
+                .transition()
                 .duration(300)
                 .attr('stroke', this.selectColor);
-            this.d3_rectangle.transition()
+            this.d3_rectangle
+                .transition()
                 .delay(300)
                 .duration(500)
                 .attr('height', 200);
-            this.d3_container.transition()
+            this.d3_container
+                .transition()
                 .delay(300)
                 .duration(500)
                 .attr('height', 200 - this.r - this.textMargin);
         } else {
-            this.d3_circle.transition()
+            this.d3_circle
+                .transition()
                 .delay(500)
                 .duration(300)
                 .attr('stroke', 'black');
-            this.d3_rectangle.transition()
+            this.d3_rectangle
+                .transition()
                 .duration(500)
                 .attr('height', 0);
-            this.d3_container.transition()
+            this.d3_container
+                .transition()
                 .attr('height', 0);
         }
     }
 
     changePosition(): void {
-        this.d3_rectangle.attr('x', this.x - this.width / 2)
+        this.d3_rectangle
+            .transition()
+            .duration(750)
+            .attr('x', this.x - this.width / 2)
             .attr('y', this.y)
             .attr('width', this.width);
 
-        this.d3_container.attr('x', this.x - (this.width - this.textMargin) / 2)
+        this.d3_container
+            .transition()
+            .duration(750)
+            .attr('x', this.x - (this.width - this.textMargin) / 2)
             .attr('y', this.y + this.r + this.textMargin / 2)
             .attr('width', this.width - this.textMargin);
 
-        this.d3_circle.attr('cx', this.x)
+        this.d3_circle
+            .transition()
+            .duration(750)
+            .attr('cx', this.x)
             .attr('cy', this.y)
             .attr('r', this.r);
     }

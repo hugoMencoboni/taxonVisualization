@@ -22,6 +22,10 @@ export class TreeComponent implements OnInit, OnDestroy {
 
   constructor(private taxonApiService: TaxonApiService, private fb: FormBuilder) { }
 
+  deplace(): void {
+    this.datas[1].x += 100;
+  }
+
   ngOnInit(): void {
     this.form = this.fb.group({
       name: [''],

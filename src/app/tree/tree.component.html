@@ -21,14 +21,11 @@
 
     <base-input [label]="'Medias'" [control]="form.controls.media" (inputBlur)="getMedia()"></base-input>
 </div>
-
+<button (click)="deplace()">move</button>
 <svg id="mainSvg" *ngIf="datas" preserveAspectRatio="xMinYMin meet">
     <!-- viewBox="0 0 500 500"-->
     <g app-item-link [originX]="datas[0].x" [originY]="datas[0].y" [destinationX]="datas[1].x"
         [destinationY]="datas[1].y"></g>
-
-    <!--<line [attr.x1]="datas[0].x" [attr.y1]="datas[0].y" [attr.x2]="datas[1].x" [attr.y2]="datas[1].y"
-        style="stroke:rgb(255,0,0);stroke-width:2" />-->
 
     <ng-container *ngFor="let data of datas">
         <g app-item [x]="data.x" [y]="data.y" [text]="data.text"></g>
