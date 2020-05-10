@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Taxa } from '../core/models/taxRef/taxa.model';
+import { Item } from '../core/models/tree/item.model';
 import { TaxonApiService } from '../core/services/taxon.api.service';
 
 @Component({
@@ -19,49 +20,64 @@ export class TreeComponent implements OnInit {
   distanceX = 300;
   distanceY = 100;
 
-  datas = [
-    { id: Math.floor(Math.random() * 1000), x: 150, y: 50, text: 'voici du text', actif: false, children: [] }
+  heigthWhenOpen = 200;
+
+  datas: Array<Item> = [
+    { id: Math.floor(Math.random() * 1000), x: 150, y: 300, text: 'voici du text', actif: false, childrenId: [], parentId: null }
   ];
 
   constructor(private taxonApiService: TaxonApiService, private fb: FormBuilder) { }
 
   create(): void {
     const newId = Math.floor(Math.random() * 1000);
-    const rdmIndex = 0; // Math.floor(Math.random() * this.datas.length);
+    const rdmIndex = Math.floor(Math.random() * this.datas.length);
     const parent = this.datas[rdmIndex];
     this.addChild(parent, newId);
   }
 
-  addChild(parent, childId) {
-    parent.children = [...(parent.children || []), childId];
-    const childPosition = this.getChildPosition(parent, childId);
-    this.datas.push({
+  addChild(parent: Item, childId: number): void {
+    parent.childrenId = [...(parent.childrenId || []), childId];
+    const childPosition = this.getChildPosition(childId, parent);
+    const newChild = {
       id: childId,
       x: childPosition.x,
       y: childPosition.y,
       text: 'new one',
       actif: false,
-      children: []
-    });
+      childrenId: [],
+      parentId: parent.id
+    };
+    this.datas.push(newChild);
 
+    this.updateChildPosition(parent);
+  }
+
+  updateChildPosition(item: Item): void {
     this.datas.forEach(d => {
-      if (parent.children.includes(d.id)) {
-        d.y = this.getChildPosition(parent, d.id).y;
+      if (item.childrenId.includes(d.id)) {
+        d.y = this.getChildPosition(d.id, item).y;
+        this.updateChildPosition(d);
       }
     });
   }
 
-  getItem(id) {
-    const item = this.datas.find(x => x.id === id);
-    return item ? item[0] : { x: 0, y: 0 };
+  getItem(id: number): Item {
+    return this.datas.find(x => x.id === id);
   }
 
-  getChildPosition(parent, id): { x: number, y: number } {
-    parent.children = parent.children || [];
-    const childIndex = parent.children.indexOf(id);
+  getChildPosition(id: number, parent?: Item): { x: number, y: number } {
+    parent.childrenId = parent.childrenId || [];
+    const childIndex = parent.childrenId.indexOf(id);
+    const previousChild = childIndex === 0 ? undefined : this.datas.find(x => x.id === parent.childrenId[childIndex - 1]);
+    let y;
+    if (childIndex === 0) {
+      y = parent.y + (- (parent.childrenId.length - 1) / 2) * this.distanceY;
+    } else {
+      y = previousChild.y + this.heigthWhenOpen * +previousChild.actif + this.distanceY;
+    }
     return {
       x: parent.x + this.distanceX,
-      y: parent.y + (childIndex - (parent.children.length - 1) / 2) * this.distanceY
+      y
     };
   }
 
@@ -157,6 +173,13 @@ export class TreeComponent implements OnInit {
   }
 
   onItemSelected(id: number): void {
+    // gestion du status
     this.datas.forEach(d => d.actif = d.id === id ? !d.actif : false);
+
+    // mise à jour des coordonées
+    const parentId = this.datas.find(x => x.id === id).parentId;
+    if (parentId) {
+      this.updateChildPosition(this.datas.find(x => x.id === parentId));
+    }
   }
 }

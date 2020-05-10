@@ -33,20 +33,15 @@
 <svg id="mainSvg" *ngIf="datas" preserveAspectRatio="xMinYMin meet">
     <!-- viewBox="0 0 500 500"-->
     <ng-container *ngFor="let data of datas">
-        <ng-container *ngFor="let childId of data.children">
-            <ng-container *ngIf="getItem(childId)">
-                <!--<ng-container *ngIf="getItem(childId) !== undefined">-->
-                <g app-item-link [originX]="data.x" [originY]="data.y" [destinationX]="getItem(childId).x"
-                    [destinationY]="getItem(childId).y"></g>
-                <!--</ng-container>-->
-            </ng-container>
+        <ng-container *ngFor="let childId of data.childrenId">
+            <g app-item-link [originX]="data.x" [originY]="data.y" [destinationX]="getItem(childId).x"
+                [destinationY]="getItem(childId).y"></g>
         </ng-container>
     </ng-container>
 
-
     <ng-container *ngFor="let data of datas">
         <g app-item [id]="data.id" [x]="data.x" [y]="data.y" [text]="data.text" [actif]="data.actif"
-            (selected)="onItemSelected($event)"></g>
+            [heigthWhenOpen]="heigthWhenOpen" (selected)="onItemSelected($event)"></g>
     </ng-container>
 
     <ng-container *ngFor="let imageRef of imageRefs; let index = index">

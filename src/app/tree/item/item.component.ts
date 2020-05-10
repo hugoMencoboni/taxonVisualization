@@ -18,6 +18,7 @@ export class ItemComponent implements OnChanges, AfterViewInit {
     @Input() r = 40;
 
     @Input() width = 250;
+    @Input() heigthWhenOpen;
 
     @Input() actif = false;
 
@@ -104,12 +105,12 @@ export class ItemComponent implements OnChanges, AfterViewInit {
                 .transition()
                 .delay(300)
                 .duration(500)
-                .attr('height', 200);
+                .attr('height', this.heigthWhenOpen);
             this.d3_container
                 .transition()
                 .delay(300)
                 .duration(500)
-                .attr('height', 200 - this.r - this.textMargin);
+                .attr('height', this.heigthWhenOpen - this.r - this.textMargin);
         } else {
             this.d3_circle
                 .transition()
