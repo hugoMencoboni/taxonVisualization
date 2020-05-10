@@ -16,20 +16,53 @@ export class TreeComponent implements OnInit {
 
   dataTest: Taxa;
 
-  datas = [{ id: Math.floor(Math.random() * 1000), x: 150, y: 50, text: 'voici du text', actif: false },
-  { id: Math.floor(Math.random() * 1000), x: 450, y: 150, text: 'voici du text 2', actif: false },
+  distanceX = 300;
+  distanceY = 100;
+
+  datas = [
+    { id: Math.floor(Math.random() * 1000), x: 150, y: 50, text: 'voici du text', actif: false, children: [] }
   ];
 
   constructor(private taxonApiService: TaxonApiService, private fb: FormBuilder) { }
 
   create(): void {
-    const lastData = this.datas[this.datas.length - 1];
+    const newId = Math.floor(Math.random() * 1000);
+    const rdmIndex = 0; // Math.floor(Math.random() * this.datas.length);
+    const parent = this.datas[rdmIndex];
+    this.addChild(parent, newId);
+  }
+
+  addChild(parent, childId) {
+    parent.children = [...(parent.children || []), childId];
+    const childPosition = this.getChildPosition(parent, childId);
     this.datas.push({
-      id: Math.floor(Math.random() * 1000),
-      x: lastData.x + 300, y: (1000 * (Math.random() - 0.5) + lastData.y),
+      id: childId,
+      x: childPosition.x,
+      y: childPosition.y,
       text: 'new one',
-      actif: false
+      actif: false,
+      children: []
     });
+
+    this.datas.forEach(d => {
+      if (parent.children.includes(d.id)) {
+        d.y = this.getChildPosition(parent, d.id).y;
+      }
+    });
+  }
+
+  getItem(id) {
+    const item = this.datas.find(x => x.id === id);
+    return item ? item[0] : { x: 0, y: 0 };
+  }
+
+  getChildPosition(parent, id): { x: number, y: number } {
+    parent.children = parent.children || [];
+    const childIndex = parent.children.indexOf(id);
+    return {
+      x: parent.x + this.distanceX,
+      y: parent.y + (childIndex - (parent.children.length - 1) / 2) * this.distanceY
+    };
   }
 
   moveRigth(): void {
@@ -124,6 +157,6 @@ export class TreeComponent implements OnInit {
   }
 
   onItemSelected(id: number): void {
-    this.datas.forEach(d => d.actif = d.id === id);
+    this.datas.forEach(d => d.actif = d.id === id ? !d.actif : false);
   }
 }
