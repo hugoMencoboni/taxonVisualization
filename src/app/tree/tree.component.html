@@ -1,26 +1,3 @@
-<div [formGroup]="form">
-    <base-input [label]="'Nom'" [control]="form.controls.name" (inputBlur)="getByName()"></base-input>
-    <ng-container *ngIf="nameData">
-        <div *ngFor="let taxa of nameData">
-            <div>id: {{ taxa.id }}</div>
-            <div>scientificName: {{ taxa.scientificName }}</div>
-            <div>frenchVernacularName: {{ taxa.frenchVernacularName }}</div>
-            <hr>
-        </div>
-    </ng-container>
-
-    <base-input [label]="'Enfants'" [control]="form.controls.children" (inputBlur)="getChildren()"></base-input>
-    <ng-container *ngIf="childrenData">
-        <div *ngFor="let taxa of childrenData">
-            <div>id: {{ taxa.id }}</div>
-            <div>scientificName: {{ taxa.scientificName }}</div>
-            <div>frenchVernacularName: {{ taxa.frenchVernacularName }}</div>
-            <hr>
-        </div>
-    </ng-container>
-
-    <base-input [label]="'Medias'" [control]="form.controls.media" (inputBlur)="getMedia()"></base-input>
-</div>
 <div class="actions">
     <button (click)="create()" style="grid-area: 'add';">create more</button>
     <button (click)="moveUp()" style="grid-area: 'north';">^</button>
@@ -42,9 +19,5 @@
     <ng-container *ngFor="let data of datas">
         <g app-item [id]="data.id" [x]="data.x" [y]="data.y" [text]="data.text" [actif]="data.actif"
             [heigthWhenOpen]="heigthWhenOpen" (selected)="onItemSelected($event)"></g>
-    </ng-container>
-
-    <ng-container *ngFor="let imageRef of imageRefs; let index = index">
-        <image [attr.xlink:href]="imageRef" x="0" [attr.y]="index*400" height="50%" width="50%" />
     </ng-container>
 </svg>

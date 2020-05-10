@@ -3,13 +3,18 @@
     grid-template-columns: 1fr;
     grid-template-areas: 
         "header"
-        "content";
+        "tree"
+        "form";
 }
 
 .header {
     grid-area: header;
 }
 
-.content {
+.form {
     grid-area: content;
+}
+
+.tree {
+    grid-area: tree;
 }

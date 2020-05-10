@@ -1,4 +1,27 @@
 <div class="app-content">
   <div class="header"></div>
-  <app-tree class="content"></app-tree>
+  <div [formGroup]="form" class="form">
+    <base-input [label]="'Nom'" [control]="form.controls.name" (inputBlur)="getByName()"></base-input>
+    <ng-container *ngIf="nameData">
+      <div *ngFor="let taxa of nameData">
+        <div>id: {{ taxa.id }}</div>
+        <div>scientificName: {{ taxa.scientificName }}</div>
+        <div>frenchVernacularName: {{ taxa.frenchVernacularName }}</div>
+        <hr>
+      </div>
+    </ng-container>
+
+    <base-input [label]="'Enfants'" [control]="form.controls.children" (inputBlur)="getChildren()"></base-input>
+    <ng-container *ngIf="childrenData">
+      <div *ngFor="let taxa of childrenData">
+        <div>id: {{ taxa.id }}</div>
+        <div>scientificName: {{ taxa.scientificName }}</div>
+        <div>frenchVernacularName: {{ taxa.frenchVernacularName }}</div>
+        <hr>
+      </div>
+    </ng-container>
+
+    <base-input [label]="'Medias'" [control]="form.controls.media" (inputBlur)="getMedia()"></base-input>
+  </div>
+  <app-tree class="tree"></app-tree>
 </div>
