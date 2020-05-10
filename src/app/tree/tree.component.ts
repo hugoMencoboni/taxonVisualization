@@ -7,6 +7,9 @@ import { Item } from '../core/models/tree/item.model';
   styleUrls: ['./tree.component.scss']
 })
 export class TreeComponent {
+  focusPositionX = window.screen.width / 2;
+  focusPositionY = window.screen.height / 2;
+
   distanceX = 300;
   distanceY = 100;
 
@@ -44,13 +47,21 @@ export class TreeComponent {
   }
 
   onItemSelected(id: number): void {
+    const item = this.datas.find(x => x.id === id);
+    const itemPositionX = item.x;
+    const itemPositionY = item.y;
+
     // gestion du status
-    this.datas.forEach(d => d.actif = d.id === id ? !d.actif : false);
+    this.datas.forEach(d => {
+      d.x -= itemPositionX - this.focusPositionX;
+      d.y -= itemPositionY - this.focusPositionY;
+      d.actif = d.id === id ? !d.actif : false;
+    });
 
     // mise à jour des coordonées
     const parentId = this.datas.find(x => x.id === id).parentId;
     if (parentId) {
-      this.updateChildPosition(this.datas.find(x => x.id === parentId));
+      // this.updateChildPosition(this.datas.find(x => x.id === parentId));
     }
   }
 

@@ -45,16 +45,17 @@ export class ItemComponent implements OnChanges, AfterViewInit {
     ngOnChanges(changes: SimpleChanges): void {
         if (!this.drawed) { return; }
 
-        if (!changes.text) {
-            this.d3_text.html(this.text);
+        const transition = new Transitions();
+        if (changes.x || changes.y || changes.r || changes.width) {
+            this.changePosition(transition);
         }
 
         if (changes.actif) {
-            this.statusChange();
+            this.statusChange(transition);
         }
 
-        if (changes.x || changes.y || changes.r || changes.width) {
-            this.changePosition();
+        if (changes.text) {
+            this.d3_text.html(this.text);
         }
     }
 
@@ -95,59 +96,106 @@ export class ItemComponent implements OnChanges, AfterViewInit {
         this.drawed = true;
     }
 
-    statusChange(): void {
+    statusChange(transition = new Transitions()): void {
         if (this.actif) {
-            this.d3_circle
-                .transition()
-                .duration(300)
+            if (!transition.circle) {
+                transition.circle = this.d3_circle
+                    .transition()
+                    .duration(300);
+            }
+
+            transition.circle
                 .attr('stroke', this.activeColor);
-            this.d3_rectangle
-                .transition()
-                .delay(300)
-                .duration(500)
+
+            if (!transition.rectangle) {
+                transition.rectangle = this.d3_rectangle
+                    .transition()
+                    .delay(300)
+                    .duration(500);
+            }
+
+            transition.rectangle
                 .attr('height', this.heigthWhenOpen);
-            this.d3_container
-                .transition()
-                .delay(300)
-                .duration(500)
+
+            if (!transition.container) {
+                transition.container = this.d3_rectangle
+                    .transition()
+                    .delay(300)
+                    .duration(500);
+            }
+
+            transition.container
                 .attr('height', this.heigthWhenOpen - this.r - this.textMargin);
         } else {
-            this.d3_circle
-                .transition()
-                .delay(500)
-                .duration(300)
+            if (!transition.circle) {
+                transition.circle = this.d3_circle
+                    .transition()
+                    .delay(500)
+                    .duration(300);
+            }
+
+            transition.circle
                 .attr('stroke', this.inactiveColor);
-            this.d3_rectangle
-                .transition()
-                .duration(500)
+
+            if (!transition.rectangle) {
+                transition.rectangle = this.d3_rectangle
+                    .transition()
+                    .duration(500)
+                    .attr('height', 0);
+            }
+
+            transition.rectangle
                 .attr('height', 0);
-            this.d3_container
-                .transition()
+
+            if (!transition.container) {
+                transition.container = this.d3_container
+                    .transition();
+            }
+
+            transition.container
                 .attr('height', 0);
         }
     }
 
-    changePosition(): void {
-        this.d3_rectangle
-            .transition()
-            .duration(750)
+    changePosition(transition = new Transitions()): void {
+        if (!transition.rectangle) {
+            transition.rectangle = this.d3_rectangle
+                .transition()
+                .duration(750);
+        }
+
+        transition.rectangle
             .attr('x', this.x - this.width / 2)
             .attr('y', this.y)
             .attr('width', this.width);
 
-        this.d3_container
-            .transition()
-            .duration(750)
+        if (!transition.container) {
+            transition.container = this.d3_container
+                .transition()
+                .duration(750);
+        }
+
+        transition.container
             .attr('x', this.x - (this.width - this.textMargin) / 2)
             .attr('y', this.y + this.r + this.textMargin / 2)
             .attr('width', this.width - this.textMargin);
 
-        this.d3_circle
-            .transition()
-            .duration(750)
+        if (!transition.circle) {
+            transition.circle = this.d3_circle
+                .transition()
+                .duration(750);
+        }
+
+        transition.circle
             .attr('cx', this.x)
             .attr('cy', this.y)
             .attr('r', this.r);
     }
 }
 
+class Transitions {
+    rectangle: any;
+    circle: any;
+    container: any;
+    text: any;
+}
