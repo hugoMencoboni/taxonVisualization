@@ -51,17 +51,17 @@ export class TreeComponent {
     const itemPositionX = item.x;
     const itemPositionY = item.y;
 
-    // gestion du status
+    // Gestion du status
     this.datas.forEach(d => {
       d.x -= itemPositionX - this.focusPositionX;
       d.y -= itemPositionY - this.focusPositionY;
       d.actif = d.id === id ? !d.actif : false;
     });
 
-    // mise à jour des coordonées
+    // Décalage des cousins
     const parentId = this.datas.find(x => x.id === id).parentId;
     if (parentId) {
-      // this.updateChildPosition(this.datas.find(x => x.id === parentId));
+      this.updateChildPosition(this.datas.find(x => x.id === parentId));
     }
   }
 
