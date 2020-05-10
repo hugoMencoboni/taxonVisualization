@@ -35,11 +35,15 @@ export class TreeComponent {
     this.datas.forEach(d => d.y -= 300);
   }
 
-  create(): void {
-    const newId = Math.floor(Math.random() * 1000);
-    const rdmIndex = Math.floor(Math.random() * this.datas.length);
-    const parent = this.datas[rdmIndex];
-    this.addChild(parent, newId);
+  create(nbrToCreate = 1): void {
+    const parent = this.datas.find(x => x.actif) || this.datas[0];
+    let nbr = 0;
+    const childIds = new Array<number>();
+    while (nbr < nbrToCreate) {
+      childIds.push(Math.floor(Math.random() * 1000));
+      nbr++;
+    }
+    this.addChild(parent, childIds);
   }
 
   getItem(id: number): Item {
@@ -63,23 +67,28 @@ export class TreeComponent {
     if (parentId) {
       this.updateChildPosition(this.datas.find(x => x.id === parentId));
     }
+
+    if (!item.childrenId.length) {
+      this.create(Math.floor(Math.random() * 6));
+    }
   }
 
-  private addChild(parent: Item, childId: number): void {
-    parent.childrenId = [...(parent.childrenId || []), childId];
-    const childPosition = this.getChildPosition(childId, parent);
-    const newChild = {
-      id: childId,
-      x: childPosition.x,
-      y: childPosition.y,
-      text: 'new one',
-      actif: false,
-      childrenId: [],
-      parentId: parent.id
-    };
-    this.datas.push(newChild);
+  private addChild(parent: Item, childIds: Array<number>): void {
+    parent.childrenId = [...(parent.childrenId || []), ...childIds];
 
-    this.updateChildPosition(parent);
+    childIds.forEach(childId => {
+      const childPosition = this.getChildPosition(childId, parent);
+      const newChild = {
+        id: childId,
+        x: childPosition.x,
+        y: childPosition.y,
+        text: 'new one',
+        actif: false,
+        childrenId: [],
+        parentId: parent.id
+      };
+      this.datas.push(newChild);
+    });
   }
 
   private updateChildPosition(item: Item): void {
