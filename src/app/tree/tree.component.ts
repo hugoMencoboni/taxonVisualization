@@ -16,7 +16,7 @@ export class TreeComponent {
   heigthWhenOpen = 200;
 
   datas: Array<Item> = [
-    { id: Math.floor(Math.random() * 1000), x: 150, y: 300, text: 'voici du text', actif: false, childrenId: [], parentId: null }
+    { id: Math.floor(Math.random() * 1000), x: 150, y: 300, text: 'voici du text', actif: false, childrenId: [], parentId: null, depth: 0 }
   ];
 
   moveRigth(): void {
@@ -36,14 +36,16 @@ export class TreeComponent {
   }
 
   create(nbrToCreate = 1): void {
-    const parent = this.datas.find(x => x.actif) || this.datas[0];
-    let nbr = 0;
-    const childIds = new Array<number>();
-    while (nbr < nbrToCreate) {
-      childIds.push(Math.floor(Math.random() * 1000));
-      nbr++;
+    const parent = this.datas.find(x => x.actif);
+    if (parent) {
+      let nbr = 0;
+      const childIds = new Array<number>();
+      while (nbr < nbrToCreate) {
+        childIds.push(Math.floor(Math.random() * 1000 + 1));
+        nbr++;
+      }
+      this.addChild(parent, childIds);
     }
-    this.addChild(parent, childIds);
   }
 
   getItem(id: number): Item {
@@ -54,6 +56,15 @@ export class TreeComponent {
     const item = this.datas.find(x => x.id === id);
     const itemPositionX = item.x;
     const itemPositionY = item.y;
+
+    // Ne garde que les élément de profondeur inférieur à l'élément ou frère de l'élément
+    const itemsToRemove = this.datas.map(d => {
+      if (d.depth >= item.depth && d.parentId !== item.parentId) {
+        return d.id;
+      }
+    }).filter(x => x);
+
+    this.removeItems(itemsToRemove);
 
     // Gestion du status
     this.datas.forEach(d => {
@@ -85,10 +96,20 @@ export class TreeComponent {
         text: 'new one',
         actif: false,
         childrenId: [],
-        parentId: parent.id
+        parentId: parent.id,
+        depth: parent.depth + 1
       };
       this.datas.push(newChild);
     });
+  }
+
+  private removeItems(ids: Array<number>): void {
+    if (ids.length) {
+      this.datas = this.datas.filter(d => !ids.includes(d.id));
+      this.datas.forEach(d => {
+        d.childrenId = d.childrenId.filter(childId => !ids.includes(childId));
+      });
+    }
   }
 
   private updateChildPosition(item: Item): void {

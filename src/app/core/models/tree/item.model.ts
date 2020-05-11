@@ -6,4 +6,5 @@ export interface Item {
     actif: boolean;
     parentId: number;
     childrenId: Array<number>;
+    depth: number;
 }
