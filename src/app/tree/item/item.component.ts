@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
+import { BaseType } from 'd3';
 
 @Component({
     selector: '[app-item]',
@@ -29,10 +30,10 @@ export class ItemComponent implements OnChanges, AfterViewInit {
 
     textMargin = 20;
 
-    private d3_rectangle;
-    private d3_circle;
-    private d3_container;
-    private d3_text;
+    private d3_rectangle: d3.Selection<SVGElement, {}, HTMLElement, any>;
+    private d3_circle: d3.Selection<SVGElement, {}, HTMLElement, any>;
+    private d3_container: d3.Selection<SVGElement, {}, HTMLElement, any>;
+    private d3_text: d3.Selection<BaseType, {}, HTMLElement, any>;
 
     private drawed = false;
 
@@ -118,7 +119,7 @@ export class ItemComponent implements OnChanges, AfterViewInit {
                 .attr('height', this.heigthWhenOpen);
 
             if (!transition.container) {
-                transition.container = this.d3_rectangle
+                transition.container = this.d3_container
                     .transition()
                     .delay(300)
                     .duration(500);
@@ -194,8 +195,8 @@ export class ItemComponent implements OnChanges, AfterViewInit {
 }
 
 class Transitions {
-    rectangle: any;
-    circle: any;
-    container: any;
-    text: any;
+    rectangle: d3.Transition<SVGElement, {}, HTMLElement, any>;
+    circle: d3.Transition<SVGElement, {}, HTMLElement, any>;
+    container: d3.Transition<SVGElement, {}, HTMLElement, any>;
+    text: d3.Transition<SVGElement, {}, HTMLElement, any>;
 }

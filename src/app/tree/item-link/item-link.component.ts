@@ -21,7 +21,7 @@ export class ItemLinkComponent implements OnChanges, AfterViewInit {
   activeColor = '#3974b3';
   inactiveColor = '#bababa';
 
-  private d3_path;
+  private d3_path: d3.Selection<SVGElement, {}, HTMLElement, any>;
   private drawed = false;
 
   constructor() { }
@@ -56,25 +56,38 @@ export class ItemLinkComponent implements OnChanges, AfterViewInit {
     this.drawed = true;
   }
 
-  statusChange(): void {
+  statusChange(transition = new Transitions()): void {
     if (this.actif) {
-      this.d3_path
-        .transition()
-        .duration(300)
+      if (!transition.path) {
+        transition.path = this.d3_path
+          .transition()
+          .duration(300);
+      }
+
+      transition.path
         .attr('stroke', this.activeColor);
     } else {
-      this.d3_path
-        .transition()
-        .delay(500)
-        .duration(300)
+
+      if (!transition.path) {
+        transition.path = this.d3_path
+          .transition()
+          .delay(500)
+          .duration(300);
+      }
+
+      transition.path
         .attr('stroke', this.inactiveColor);
     }
   }
 
-  changePosition(): void {
-    this.d3_path
-      .transition()
-      .duration(750)
+  changePosition(transition = new Transitions()): void {
+    if (!transition.path) {
+      transition.path = this.d3_path
+        .transition()
+        .duration(750);
+    }
+
+    transition.path
       .attr('d', this.setLine().toString());
   }
 
@@ -92,4 +105,8 @@ export class ItemLinkComponent implements OnChanges, AfterViewInit {
 
     return path;
   }
+}
+
+class Transitions {
+  path: d3.Transition<SVGElement, {}, HTMLElement, any>;
 }
