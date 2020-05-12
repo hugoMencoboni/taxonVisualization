@@ -3,8 +3,7 @@ import * as d3 from 'd3';
 
 @Component({
   selector: '[app-item-link]',
-  template: '<svg:g #pathContainer></g>',
-  styleUrls: ['./item-link.component.scss']
+  template: '<svg:g #pathContainer></g>'
 })
 export class ItemLinkComponent implements OnChanges, AfterViewInit {
   @ViewChild('pathContainer')

@@ -1,9 +1,8 @@
 <div class="actions">
-    <button (click)="moveUp()" style="grid-area: 'north';">^</button>
-    <button (click)="moveLeft()" style="grid-area: 'east';">
-        < &nbsp;</button>
-            <button (click)="moveRigth()" style="grid-area: 'west';">></button>
-            <button (click)="moveDown()" style="grid-area: 'south';">v</button>
+    <a (click)="moveUp()" class="north glyphicon glyphicon-triangle-top"></a>
+    <a (click)="moveLeft()" class="east glyphicon glyphicon-triangle-left"></a>
+    <a (click)="moveRigth()" class="west glyphicon glyphicon-triangle-right"></a>
+    <a (click)="moveDown()" class="south glyphicon glyphicon-triangle-bottom"></a>
 </div>
 
 <svg id="mainSvg" *ngIf="datas" preserveAspectRatio="xMinYMin meet">

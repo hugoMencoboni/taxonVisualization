@@ -16,7 +16,16 @@ export class TreeComponent {
   heigthWhenOpen = 200;
 
   datas: Array<Item> = [
-    { id: Math.floor(Math.random() * 1000), x: 150, y: 300, text: 'voici du text', actif: false, childrenId: [], parentId: null, depth: 0 }
+    {
+      id: Math.floor(Math.random() * 1000),
+      x: this.focusPositionX,
+      y: this.focusPositionY,
+      text: 'voici du text',
+      actif: false,
+      childrenId: [],
+      parentId: null,
+      depth: 0
+    }
   ];
 
   moveRigth(): void {

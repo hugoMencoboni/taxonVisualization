@@ -4,8 +4,7 @@ import { BaseType } from 'd3';
 
 @Component({
     selector: '[app-item]',
-    template: '<svg:g #itemContainer></g>',
-    styleUrls: ['./item.component.scss']
+    template: '<svg:g #itemContainer></g>'
 })
 export class ItemComponent implements OnChanges, AfterViewInit {
     @ViewChild('itemContainer')
@@ -27,6 +26,7 @@ export class ItemComponent implements OnChanges, AfterViewInit {
 
     activeColor = '#3974b3';
     inactiveColor = '#bababa';
+    hoverColor = '#3974b3';
 
     textMargin = 20;
 
@@ -91,6 +91,16 @@ export class ItemComponent implements OnChanges, AfterViewInit {
             .attr('stroke', this.inactiveColor)
             .attr('stroke-width', 2)
             .attr('fill', 'white')
+            .on('mouseover', () => {
+                this.d3_circle
+                    .attr('stroke-width', 4)
+                    .attr('stroke', this.hoverColor);
+            })
+            .on('mouseout', () => {
+                this.d3_circle
+                    .attr('stroke-width', 2)
+                    .attr('stroke', this.actif ? this.activeColor : this.inactiveColor);
+            })
             .on('click', () => this.selected.emit(this.id));
 
         this.statusChange();
