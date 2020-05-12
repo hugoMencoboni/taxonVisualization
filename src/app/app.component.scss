@@ -2,19 +2,16 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-template-areas: 
-        "header"
-        "tree"
-        "form";
+        "tree";
+
+    .header {
+        display: none;
+    }
+    .tree {
+        grid-area: tree;
+    }
+    .form {
+        position: absolute;
+    }
 }
 
-.header {
-    grid-area: header;
-}
-
-.form {
-    grid-area: content;
-}
-
-.tree {
-    grid-area: tree;
-}

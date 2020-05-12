@@ -1,5 +1,7 @@
 <div class="app-content">
   <div class="header"></div>
+  <app-tree class="tree"></app-tree>
+
   <div [formGroup]="form" class="form">
     <base-input [label]="'Nom'" [control]="form.controls.name" (inputBlur)="getByName()"></base-input>
     <ng-container *ngIf="nameData">
@@ -23,5 +25,4 @@
 
     <base-input [label]="'Medias'" [control]="form.controls.media" (inputBlur)="getMedia()"></base-input>
   </div>
-  <app-tree class="tree"></app-tree>
 </div>

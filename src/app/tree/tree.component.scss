@@ -33,21 +33,20 @@
 
     .north {
         grid-area: north;
-        padding-top: 8px;
+        transform: rotate(-90deg);
     }
     
     .east {
         grid-area: east;
-        padding-left: 8px;
+        transform: rotate(180deg);
     }
     
     .west {
         grid-area: west;
-        padding-right: 8px;
     }
     
     .south {
         grid-area: south;
-        padding-bottom: 8px;
+        transform: rotate(90deg);
     }
 }
