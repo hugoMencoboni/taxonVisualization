@@ -7,8 +7,8 @@ import { Item } from '../core/models/tree/item.model';
   styleUrls: ['./tree.component.scss']
 })
 export class TreeComponent {
-  focusPositionX = window.screen.width / 2;
-  focusPositionY = window.screen.height / 2;
+  focusPositionX = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) / 2;
+  focusPositionY = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) / 2;
 
   distanceX = 300;
   distanceY = 100;
