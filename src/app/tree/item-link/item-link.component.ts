@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: '[app-item-link]',
@@ -17,12 +18,18 @@ export class ItemLinkComponent implements OnChanges, AfterViewInit {
 
   @Input() actif = false;
 
+  @Input() text: string;
+
   activeColor = '#3974b3';
   inactiveColor = '#bababa';
 
   initAtInfinit = true;
+  id = uuidv4();
 
   private d3_path: d3.Selection<SVGElement, {}, HTMLElement, any>;
+  private d3_text: d3.Selection<SVGElement, {}, HTMLElement, any>;
+  private d3_textPath: d3.Selection<SVGElement, {}, HTMLElement, any>;
+
   private drawed = false;
 
   constructor() { }
@@ -41,6 +48,10 @@ export class ItemLinkComponent implements OnChanges, AfterViewInit {
     if (changes.actif) {
       this.statusChange();
     }
+
+    if (changes.text) {
+      this.d3_textPath.text(this.text);
+    }
   }
 
   private draw(): void {
@@ -51,7 +62,20 @@ export class ItemLinkComponent implements OnChanges, AfterViewInit {
     this.d3_path = d3.select(element).append('path')
       .attr('fill', 'none')
       .attr('stroke-width', 2)
+      .attr('id', this.id)
       .attr('d', this.setLine(this.initAtInfinit).toString());
+
+    this.d3_text = d3.select(element).append('text')
+      .attr('class', 'linklabel')
+      .attr('dx', '-45')
+      .attr('dy', '-5')
+      .attr('text-anchor', 'end')
+      .style('fill', this.inactiveColor);
+
+    this.d3_textPath = this.d3_text.append('textPath')
+      .attr('xlink:href', '#' + this.id)
+      .attr('startOffset', '100%')
+      .text(this.text);
 
     const transitions = new Transitions();
     this.statusChange(transitions);
@@ -118,4 +142,6 @@ export class ItemLinkComponent implements OnChanges, AfterViewInit {
 
 class Transitions {
   path: d3.Transition<SVGElement, {}, HTMLElement, any>;
+  text: d3.Transition<SVGElement, {}, HTMLElement, any>;
+  textPath: d3.Transition<SVGElement, {}, HTMLElement, any>;
 }
