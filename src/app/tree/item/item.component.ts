@@ -30,6 +30,8 @@ export class ItemComponent implements OnChanges, AfterViewInit {
 
     textMargin = 20;
 
+    initAtInfinit = true;
+
     private d3_rectangle: d3.Selection<SVGElement, {}, HTMLElement, any>;
     private d3_circle: d3.Selection<SVGElement, {}, HTMLElement, any>;
     private d3_container: d3.Selection<SVGElement, {}, HTMLElement, any>;
@@ -85,7 +87,7 @@ export class ItemComponent implements OnChanges, AfterViewInit {
             .attr('fill', 'black');
 
         this.d3_circle = d3.select(element).append('circle')
-            .attr('cx', this.x)
+            .attr('cx', this.x + (this.initAtInfinit ? 3000 : 0))
             .attr('cy', this.y)
             .attr('r', this.r)
             .attr('stroke', this.inactiveColor)
@@ -103,101 +105,107 @@ export class ItemComponent implements OnChanges, AfterViewInit {
             })
             .on('click', () => this.selected.emit(this.id));
 
-        this.statusChange();
+        const transitions = new Transitions();
+        this.statusChange(transitions);
+
+        if (this.initAtInfinit) {
+            this.changePosition(transitions);
+        }
+
         this.drawed = true;
     }
 
-    statusChange(transition = new Transitions()): void {
+    statusChange(transitions = new Transitions()): void {
         if (this.actif) {
-            if (!transition.circle) {
-                transition.circle = this.d3_circle
+            if (!transitions.circle) {
+                transitions.circle = this.d3_circle
                     .transition()
                     .duration(300);
             }
 
-            transition.circle
+            transitions.circle
                 .attr('stroke', this.activeColor);
 
-            if (!transition.rectangle) {
-                transition.rectangle = this.d3_rectangle
+            if (!transitions.rectangle) {
+                transitions.rectangle = this.d3_rectangle
                     .transition()
                     .delay(300)
                     .duration(500);
             }
 
-            transition.rectangle
+            transitions.rectangle
                 .attr('height', this.heigthWhenOpen);
 
-            if (!transition.container) {
-                transition.container = this.d3_container
+            if (!transitions.container) {
+                transitions.container = this.d3_container
                     .transition()
                     .delay(300)
                     .duration(500);
             }
 
-            transition.container
+            transitions.container
                 .attr('height', this.heigthWhenOpen - this.r - this.textMargin);
         } else {
-            if (!transition.circle) {
-                transition.circle = this.d3_circle
+            if (!transitions.circle) {
+                transitions.circle = this.d3_circle
                     .transition()
                     .delay(500)
                     .duration(300);
             }
 
-            transition.circle
+            transitions.circle
                 .attr('stroke', this.inactiveColor);
 
-            if (!transition.rectangle) {
-                transition.rectangle = this.d3_rectangle
+            if (!transitions.rectangle) {
+                transitions.rectangle = this.d3_rectangle
                     .transition()
                     .duration(500)
                     .attr('height', 0);
             }
 
-            transition.rectangle
+            transitions.rectangle
                 .attr('height', 0);
 
-            if (!transition.container) {
-                transition.container = this.d3_container
+            if (!transitions.container) {
+                transitions.container = this.d3_container
                     .transition();
             }
 
-            transition.container
+            transitions.container
                 .attr('height', 0);
         }
     }
 
-    changePosition(transition = new Transitions()): void {
-        if (!transition.rectangle) {
-            transition.rectangle = this.d3_rectangle
+    changePosition(transitions = new Transitions()): void {
+        if (!transitions.rectangle) {
+            transitions.rectangle = this.d3_rectangle
                 .transition()
                 .duration(750);
         }
 
-        transition.rectangle
+        transitions.rectangle
             .attr('x', this.x - this.width / 2)
             .attr('y', this.y)
             .attr('width', this.width);
 
-        if (!transition.container) {
-            transition.container = this.d3_container
+        if (!transitions.container) {
+            transitions.container = this.d3_container
                 .transition()
                 .duration(750);
         }
 
-        transition.container
+        transitions.container
             .attr('x', this.x - (this.width - this.textMargin) / 2)
             .attr('y', this.y + this.r + this.textMargin / 2)
             .attr('width', this.width - this.textMargin);
 
-        if (!transition.circle) {
-            transition.circle = this.d3_circle
+        if (!transitions.circle) {
+            transitions.circle = this.d3_circle
                 .transition()
                 .duration(750);
         }
 
-        transition.circle
+        transitions.circle
             .attr('cx', this.x)
             .attr('cy', this.y)
             .attr('r', this.r);

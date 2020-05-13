@@ -20,6 +20,8 @@ export class ItemLinkComponent implements OnChanges, AfterViewInit {
   activeColor = '#3974b3';
   inactiveColor = '#bababa';
 
+  initAtInfinit = true;
+
   private d3_path: d3.Selection<SVGElement, {}, HTMLElement, any>;
   private drawed = false;
 
@@ -49,58 +51,66 @@ export class ItemLinkComponent implements OnChanges, AfterViewInit {
     this.d3_path = d3.select(element).append('path')
       .attr('fill', 'none')
       .attr('stroke-width', 2)
-      .attr('d', this.setLine().toString());
+      .attr('d', this.setLine(this.initAtInfinit).toString());
 
-    this.statusChange();
+    const transitions = new Transitions();
+    this.statusChange(transitions);
+
+    if (this.initAtInfinit) {
+      this.changePosition(transitions);
+    }
+
     this.drawed = true;
   }
 
-  statusChange(transition = new Transitions()): void {
+  statusChange(transitions = new Transitions()): void {
     if (this.actif) {
-      if (!transition.path) {
-        transition.path = this.d3_path
+      if (!transitions.path) {
+        transitions.path = this.d3_path
           .transition()
           .duration(300);
       }
 
-      transition.path
+      transitions.path
         .attr('stroke', this.activeColor);
     } else {
 
-      if (!transition.path) {
-        transition.path = this.d3_path
+      if (!transitions.path) {
+        transitions.path = this.d3_path
           .transition()
           .delay(500)
           .duration(300);
       }
 
-      transition.path
+      transitions.path
         .attr('stroke', this.inactiveColor);
     }
   }
 
-  changePosition(transition = new Transitions()): void {
-    if (!transition.path) {
-      transition.path = this.d3_path
+  changePosition(transitions = new Transitions()): void {
+    if (!transitions.path) {
+      transitions.path = this.d3_path
         .transition()
         .duration(750);
     }
 
-    transition.path
+    transitions.path
       .attr('d', this.setLine().toString());
   }
 
-  private setLine(): d3.Path {
+  private setLine(xShift = false, yShift = false): d3.Path {
     const path = d3.path();
     const force = 50;
 
-    path.moveTo(this.originX, this.originY);
+    path.moveTo(this.originX + (xShift ? 3000 : 0), this.originY + (yShift ? 3000 : 0));
     path.bezierCurveTo(
-      this.originX + force + (this.destinationX - this.originX) / 2,
-      this.originY,
-      this.originX - force + (this.destinationX - this.originX) / 2,
-      this.destinationY,
-      this.destinationX, this.destinationY);
+      this.originX + force + (this.destinationX - this.originX) / 2 + (xShift ? 3000 : 0),
+      this.originY + (yShift ? 3000 : 0),
+      this.originX - force + (this.destinationX - this.originX) / 2 + (xShift ? 3000 : 0),
+      this.destinationY + (yShift ? 3000 : 0),
+      this.destinationX + (xShift ? 3000 : 0),
+      this.destinationY + (yShift ? 3000 : 0)
+    );
 
     return path;
   }
