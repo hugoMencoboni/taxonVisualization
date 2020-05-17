@@ -28,7 +28,7 @@ import { TreeComponent } from './tree/tree.component';
   providers: [
     {
       provide: DataService,
-      useValue: TaxRefService
+      useClass: TaxRefService
     }],
   bootstrap: [AppComponent]
 })

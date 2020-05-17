@@ -1,11 +1,13 @@
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BaseDataService } from '../models/baseDataService.model';
 import { DataItem } from '../models/tree/item.model';
 import { TaxRefApiService } from './api/taxref.api.service';
 import { CacheService } from './cache.service';
+import { DataService } from './data.service';
 
-export class TaxRefService extends BaseDataService {
+@Injectable()
+export class TaxRefService extends DataService {
 
     constructor(
         protected cacheService: CacheService,
