@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { Item } from '../core/models/tree/item.model';
+import { take } from 'rxjs/operators';
+import { DataItem, GetTreeItem, TreeItem } from '../core/models/tree/item.model';
+import { DataService } from '../core/services/data.service';
 
 @Component({
   selector: 'app-tree',
@@ -15,18 +17,21 @@ export class TreeComponent {
 
   heigthWhenOpen = 200;
 
-  datas: Array<Item> = [
+  datas: Array<TreeItem> = [
     {
-      id: Math.floor(Math.random() * 1000),
+      id: 349525,
       x: this.focusPositionX,
       y: this.focusPositionY,
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      text: 'Biota',
       actif: false,
       childrenId: [],
+      childrenLoaded: false,
       parentId: null,
       depth: 0
     }
   ];
+
+  constructor(private dataService: DataService) { }
 
   moveRigth(): void {
     this.datas.forEach(d => d.x -= 500);
@@ -44,20 +49,7 @@ export class TreeComponent {
     this.datas.forEach(d => d.y -= 300);
   }
 
-  create(nbrToCreate = 1): void {
-    const parent = this.datas.find(x => x.actif);
-    if (parent) {
-      let nbr = 0;
-      const childIds = new Array<number>();
-      while (nbr < nbrToCreate) {
-        childIds.push(Math.floor(Math.random() * 1000 + 1));
-        nbr++;
-      }
-      this.addChild(parent, childIds);
-    }
-  }
-
-  getItem(id: number): Item {
+  getItem(id: number): TreeItem {
     return this.datas.find(x => x.id === id);
   }
 
@@ -88,27 +80,23 @@ export class TreeComponent {
       this.updateChildPosition(this.datas.find(x => x.id === parentId));
     }
 
-    if (!item.childrenId.length) {
-      this.create(Math.floor(Math.random() * 6));
+    if (!item.childrenLoaded) {
+      this.dataService.getChildren(item.id.toString()).pipe(take(1)).subscribe((data: Array<DataItem>) => {
+        if (data) {
+          this.addChild(item, data);
+        }
+
+        item.childrenLoaded = true;
+      });
     }
   }
 
-  private addChild(parent: Item, childIds: Array<number>): void {
-    parent.childrenId = [...(parent.childrenId || []), ...childIds];
+  private addChild(parent: TreeItem, childs: Array<DataItem>): void {
+    parent.childrenId = [...(parent.childrenId || []), ...childs.map(c => c.id)];
 
-    childIds.forEach(childId => {
-      const childPosition = this.getChildPosition(childId, parent);
-      const newChild = {
-        id: childId,
-        x: childPosition.x,
-        y: childPosition.y,
-        text: 'new one',
-        shortName: `${Math.random().toString(36).substring(8)} ${Math.random().toString(36).substring(9)} ${Math.random().toString(36).substring(6)}`,
-        actif: false,
-        childrenId: [],
-        parentId: parent.id,
-        depth: parent.depth + 1
-      };
+    childs.forEach(child => {
+      const childPosition = this.getChildPosition(child.id, parent);
+      const newChild = GetTreeItem(child, childPosition.x, childPosition.y, parent);
       this.datas.push(newChild);
     });
   }
@@ -117,12 +105,16 @@ export class TreeComponent {
     if (ids.length) {
       this.datas = this.datas.filter(d => !ids.includes(d.id));
       this.datas.forEach(d => {
-        d.childrenId = d.childrenId.filter(childId => !ids.includes(childId));
+        const filtredChildren = d.childrenId.filter(childId => !ids.includes(childId));
+        if (d.childrenId.length !== filtredChildren.length) {
+          d.childrenLoaded = false;
+        }
+        d.childrenId = filtredChildren;
       });
     }
   }
 
-  private updateChildPosition(item: Item): void {
+  private updateChildPosition(item: TreeItem): void {
     this.datas.forEach(d => {
       if (item.childrenId.includes(d.id)) {
         d.y = this.getChildPosition(d.id, item).y;
@@ -131,7 +123,7 @@ export class TreeComponent {
     });
   }
 
-  private getChildPosition(id: number, parent?: Item): { x: number, y: number } {
+  private getChildPosition(id: number, parent?: TreeItem): { x: number, y: number } {
     parent.childrenId = parent.childrenId || [];
     const childIndex = parent.childrenId.indexOf(id);
     const previousChild = childIndex === 0 ? undefined : this.datas.find(x => x.id === parent.childrenId[childIndex - 1]);

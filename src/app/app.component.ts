@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Taxa } from './core/models/taxRef/taxa.model';
-import { TaxonApiService } from './core/services/taxon.api.service';
+import { TaxRefApiService } from './core/services/api/taxref.api.service';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
 
   dataTest: Taxa;
 
-  constructor(private taxonApiService: TaxonApiService, private fb: FormBuilder) { }
+  constructor(private taxonApiService: TaxRefApiService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({

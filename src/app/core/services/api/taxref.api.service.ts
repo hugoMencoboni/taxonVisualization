@@ -2,15 +2,15 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AutocompleteResponseEncapsulation } from '../models/taxRef/autocomplete.model';
-import { ChrildrenResponseEncapsulation } from '../models/taxRef/children.model';
-import { MediaResponseEncapsulation } from '../models/taxRef/media.model';
-import { Taxa } from '../models/taxRef/taxa.model';
+import { AutocompleteResponseEncapsulation } from '../../models/taxRef/autocomplete.model';
+import { ChrildrenResponseEncapsulation } from '../../models/taxRef/children.model';
+import { MediaResponseEncapsulation } from '../../models/taxRef/media.model';
+import { Taxa } from '../../models/taxRef/taxa.model';
 
 @Injectable({
     providedIn: 'root',
 })
-export class TaxonApiService {
+export class TaxRefApiService {
     private baseApi = 'https://taxref.mnhn.fr/api';
 
     constructor(private http: HttpClient) { }
