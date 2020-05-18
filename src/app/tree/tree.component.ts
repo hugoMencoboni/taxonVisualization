@@ -112,7 +112,7 @@ export class TreeComponent implements OnInit {
 
   private updateChildPosition(item: TreeItem): void {
     this.datas.forEach(d => {
-      if (item.childrenId.includes(d.id)) {
+      if (item.childrenId && item.childrenId.includes(d.id)) {
         d.y = this.getChildPosition(d.id, item).y;
         this.updateChildPosition(d);
       }

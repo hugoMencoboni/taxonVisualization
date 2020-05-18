@@ -22,12 +22,13 @@ export function GetTreeItem(data: DataItem, x: number, y: number, parent: TreeIt
     return {
         id: data.id,
         text: data.text,
+        shortName: data.shortName,
         x,
         y,
         actif: false,
-        childrenId: data.children ? data.children.map(c => c.id) : undefined,
+        childrenId: data.children ? data.children.map(c => c.id) : [],
         childrenLoaded: data.childrenLoaded,
         parentId: data.parentId,
-        depth: parent && parent.depth ? parent.depth + 1 : 0
+        depth: parent && (parent.depth !== null || parent.depth !== undefined) ? parent.depth + 1 : 0
     };
 }
