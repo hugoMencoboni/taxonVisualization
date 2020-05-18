@@ -6,6 +6,4 @@ export class BaseDataService {
     constructor(cacheService: CacheService) {
         this.cacheService = cacheService;
     }
-
-
 }

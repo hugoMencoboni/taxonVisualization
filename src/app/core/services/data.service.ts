@@ -5,12 +5,15 @@ import { DataItem } from '../models/tree/item.model';
 import { CacheService } from './cache.service';
 
 @Injectable({
-    providedIn: 'root',
-    // useClass: TaxRefService
+    providedIn: 'root'
 })
 export class DataService {
 
     constructor(protected cacheService: CacheService) { }
+
+    getSeed(): Observable<DataItem> {
+        return throwError(new Error('Implement a source!'));
+    }
 
     getChildren(id: string): Observable<Array<DataItem>> {
         const cachedData = this.cacheService.getData(id);

@@ -25,9 +25,9 @@ export function GetTreeItem(data: DataItem, x: number, y: number, parent: TreeIt
         x,
         y,
         actif: false,
-        childrenId: data.children.map(c => c.id),
+        childrenId: data.children ? data.children.map(c => c.id) : undefined,
         childrenLoaded: data.childrenLoaded,
         parentId: data.parentId,
-        depth: parent.depth ? parent.depth + 1 : 0
+        depth: parent && parent.depth ? parent.depth + 1 : 0
     };
 }

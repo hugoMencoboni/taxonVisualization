@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { DataItem, GetTreeItem, TreeItem } from '../core/models/tree/item.model';
 import { DataService } from '../core/services/data.service';
@@ -8,7 +8,7 @@ import { DataService } from '../core/services/data.service';
   templateUrl: './tree.component.html',
   styleUrls: ['./tree.component.scss']
 })
-export class TreeComponent {
+export class TreeComponent implements OnInit {
   focusPositionX = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) / 2;
   focusPositionY = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) / 2;
 
@@ -17,21 +17,15 @@ export class TreeComponent {
 
   heigthWhenOpen = 200;
 
-  datas: Array<TreeItem> = [
-    {
-      id: 349525,
-      x: this.focusPositionX,
-      y: this.focusPositionY,
-      text: 'Biota',
-      actif: false,
-      childrenId: [],
-      childrenLoaded: false,
-      parentId: null,
-      depth: 0
-    }
-  ];
+  datas: Array<TreeItem>;
 
   constructor(private dataService: DataService) { }
+
+  ngOnInit() {
+    this.dataService.getSeed().pipe(take(1)).subscribe((seed: DataItem) => {
+      this.datas = [GetTreeItem(seed, this.focusPositionX, this.focusPositionY, null)];
+    });
+  }
 
   moveRigth(): void {
     this.datas.forEach(d => d.x -= 500);
@@ -105,11 +99,13 @@ export class TreeComponent {
     if (ids.length) {
       this.datas = this.datas.filter(d => !ids.includes(d.id));
       this.datas.forEach(d => {
-        const filtredChildren = d.childrenId.filter(childId => !ids.includes(childId));
-        if (d.childrenId.length !== filtredChildren.length) {
-          d.childrenLoaded = false;
+        if (d.childrenId) {
+          const filtredChildren = d.childrenId.filter(childId => !ids.includes(childId));
+          if (d.childrenId.length !== filtredChildren.length) {
+            d.childrenLoaded = false;
+          }
+          d.childrenId = filtredChildren;
         }
-        d.childrenId = filtredChildren;
       });
     }
   }
