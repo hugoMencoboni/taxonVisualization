@@ -1,0 +1,30 @@
+export interface Taxa {
+    key: number;
+    nubKey: number;
+    nameKey: number;
+    taxonID: string;
+    sourceTaxonKey: number;
+    kingdom: string;
+    phylum: string;
+    kingdomKey: number;
+    phylumKey: number;
+    datasetKey: string;
+    constituentKey: string;
+    parentKey: number;
+    parent: string;
+    scientificName: string;
+    canonicalName: string;
+    authorship: string;
+    nameType: string;
+    rank: string;
+    origin: string;
+    taxonomicStatus: string;
+    nomenclaturalStatus: any[];
+    remarks: string;
+    numDescendants: number;
+    lastCrawled: Date;
+    lastInterpreted: Date;
+    issues: any[];
+    synonym: boolean;
+    vernacularName: string;
+}
