@@ -100,6 +100,7 @@ export class TreeComponent implements OnInit {
             }
 
             item.hasMoreChilds = !childrenData.fullyLoaded;
+            this.updateChildPosition(item);
           }
         );
     }
