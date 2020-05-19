@@ -18,7 +18,7 @@ export class ItemComponent implements OnChanges, AfterViewInit {
     @Input() y: number;
     @Input() r = 40;
 
-    @Input() width = 250;
+    @Input() width = 275;
     @Input() heigthWhenOpen;
 
     @Input() actif = false;
