@@ -9,8 +9,10 @@
     <!-- viewBox="0 0 500 500"-->
     <ng-container *ngFor="let data of datas">
         <ng-container *ngFor="let childId of data.childrenId">
-            <g app-item-link [originX]="data.x" [originY]="data.y" [destinationX]="getItem(childId).x"
-                [destinationY]="getItem(childId).y" [text]="getItem(childId).shortName"></g>
+            <ng-container *ngIf="getItem(childId)">
+                <g app-item-link [originX]="data.x" [originY]="data.y" [destinationX]="getItem(childId).x"
+                    [destinationY]="getItem(childId).y" [text]="getItem(childId).shortName"></g>
+            </ng-container>
         </ng-container>
     </ng-container>
 
