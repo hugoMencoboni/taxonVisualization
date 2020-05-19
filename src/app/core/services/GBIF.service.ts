@@ -55,7 +55,7 @@ export class GBIFService extends DataService {
                                 mediaUrl: info.splice(1, 0) ? info.splice(1, 0).filter(x => x) : []
                             };
                         }),
-                        fullyLoaded: nbrChildLoaded < datas.length
+                        fullyLoaded: datas.length < nbrChildLoaded
                     };
                 }
             })
