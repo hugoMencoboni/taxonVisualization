@@ -75,13 +75,33 @@ export class TreeComponent implements OnInit {
     }
 
     if (!item.childrenLoaded) {
-      this.dataService.getChildren(item.id.toString()).pipe(take(1)).subscribe((data: Array<DataItem>) => {
-        if (data) {
-          this.addChild(item, data);
-        }
+      this.dataService.getChildren(item.id.toString()).pipe(take(1))
+        .subscribe(
+          (childrenData: { data: Array<DataItem>, fullyLoaded: boolean }) => {
+            if (childrenData && childrenData.data) {
+              this.addChild(item, childrenData.data);
+            }
 
-        item.childrenLoaded = true;
-      });
+            item.childrenLoaded = true;
+            item.hasMoreChilds = !childrenData.fullyLoaded;
+          }
+        );
+    }
+  }
+
+  addMoreChilds(id: number): void {
+    const item = this.datas.find(x => x.id === id);
+    if (item.childrenLoaded && item.hasMoreChilds) {
+      this.dataService.getMoreChilds(item.id.toString()).pipe(take(1))
+        .subscribe(
+          (childrenData: { data: Array<DataItem>, fullyLoaded: boolean }) => {
+            if (childrenData && childrenData.data) {
+              this.addChild(item, childrenData && childrenData.data);
+            }
+
+            item.hasMoreChilds = !childrenData.fullyLoaded;
+          }
+        );
     }
   }
 

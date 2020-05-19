@@ -14,12 +14,12 @@ export class GBIFApiService {
 
     constructor(private http: HttpClient) { }
 
-    getChildren(id: number): Observable<Array<Taxa>> {
+    getChildren(id: number, limit?: number, offset?: number): Observable<Array<Taxa>> {
         if (!id) {
             return of(undefined);
         }
 
-        const url = `${this.baseApi}/species/${id}/children?limit=20`;
+        const url = `${this.baseApi}/species/${id}/children?limit=${limit}&offset=${offset}`;
         return this.http.get<RootObject<Taxa>>(url).pipe(
             map(rs => rs.results ? rs.results : undefined)
         );

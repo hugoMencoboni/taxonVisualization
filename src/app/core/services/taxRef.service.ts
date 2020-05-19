@@ -29,21 +29,24 @@ export class TaxRefService extends DataService {
         return of(seed);
     }
 
-    protected loadChildren(id): Observable<Array<DataItem>> {
+    protected loadChildren(id, offset?: number): Observable<{ data: Array<DataItem>, fullyLoaded: boolean }> {
         return this.taxRefApiService.getChildren(id).pipe(
             map(datas => {
                 if (datas) {
                     datas = datas.filter(d => d.parentId === id);
-                    return datas.map(d => {
-                        return {
-                            id: d.id,
-                            text: d.fullName,
-                            shortName: d.vernacularClassName,
-                            childrenLoaded: false,
-                            parentId: d.parentId,
-                            children: undefined
-                        };
-                    });
+                    return {
+                        data: datas.map(d => {
+                            return {
+                                id: d.id,
+                                text: d.fullName,
+                                shortName: d.vernacularClassName,
+                                childrenLoaded: false,
+                                parentId: d.parentId,
+                                children: undefined
+                            };
+                        }),
+                        fullyLoaded: true
+                    };
                 }
             })
         );

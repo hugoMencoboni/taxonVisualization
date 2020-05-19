@@ -3,6 +3,7 @@ export interface BaseItem {
     text: string;
     shortName?: string;
     childrenLoaded: boolean;
+    hasMoreChilds?: boolean;
     parentId: number;
     mediaUrl?: Array<string>;
 }
@@ -20,16 +21,16 @@ export interface TreeItem extends BaseItem {
 }
 
 export function GetTreeItem(data: DataItem, x: number, y: number, parent: TreeItem): TreeItem {
-    return {
-        id: data.id,
-        text: data.text,
-        shortName: data.shortName,
-        x,
-        y,
-        actif: false,
-        childrenId: data.children ? data.children.map(c => c.id) : [],
-        childrenLoaded: data.childrenLoaded,
-        parentId: data.parentId,
-        depth: parent && (parent.depth !== null || parent.depth !== undefined) ? parent.depth + 1 : 0
-    };
+    const treeItem = (new Object() as TreeItem);
+    Object.assign(treeItem, data);
+
+    treeItem.x = x;
+    treeItem.y = y;
+    treeItem.actif = false;
+    treeItem.childrenId = data.children ? data.children.map(c => c.id) : [];
+    treeItem.childrenLoaded = data.childrenLoaded;
+    treeItem.parentId = data.parentId;
+    treeItem.depth = parent && (parent.depth !== null || parent.depth !== undefined) ? parent.depth + 1 : 0;
+
+    return treeItem;
 }
