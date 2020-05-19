@@ -47,7 +47,7 @@ export class GBIFService extends DataService {
                         data: datas.map(d => {
                             return {
                                 id: d.key,
-                                text: d.scientificName,
+                                text: this.getText(d),
                                 shortName: d.canonicalName,
                                 childrenLoaded: false,
                                 parentId: d.parentKey,
@@ -60,5 +60,38 @@ export class GBIFService extends DataService {
                 }
             })
         );
+    }
+
+    private getText(taxon: Taxa): string {
+        const textLine = new Array<string>();
+        if (taxon.kingdom) {
+            textLine.push(`<strong class='taxa-kingdom'>Kingdom :</strong> ${taxon.kingdom}`);
+        }
+
+        if (taxon.phylum) {
+            textLine.push(`<strong class='taxa-phylum'>Phylum :</strong> ${taxon.phylum}`);
+        }
+
+        if (taxon.class) {
+            textLine.push(`<strong class='taxa-class'>Class :</strong> ${taxon.class}`);
+        }
+
+        if (taxon.family) {
+            textLine.push(`<strong class='taxa-family'>Family :</strong> ${taxon.family}`);
+        }
+
+        if (taxon.genus) {
+            textLine.push(`<strong class='taxa-genus'>Genus :</strong> ${taxon.genus}`);
+        }
+
+        if (taxon.species) {
+            textLine.push(`<strong class='taxa-species'>Species :</strong> ${taxon.species}`);
+        }
+
+        if (taxon.scientificName) {
+            textLine.push(`<strong>Scrintific name :</strong> ${taxon.scientificName}`);
+        }
+
+        return textLine.join('<br>');
     }
 }

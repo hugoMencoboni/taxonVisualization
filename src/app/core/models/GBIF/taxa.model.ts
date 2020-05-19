@@ -6,8 +6,16 @@ export interface Taxa {
     sourceTaxonKey: number;
     kingdom: string;
     phylum: string;
+    family: string;
+    class: string;
+    genus: string;
+    species: string;
     kingdomKey: number;
     phylumKey: number;
+    classKey: number;
+    familyKey: number;
+    genusKey: number;
+    speciesKey: number;
     datasetKey: string;
     constituentKey: string;
     parentKey: number;
