@@ -19,7 +19,7 @@ export class GBIFApiService {
             return of(undefined);
         }
 
-        const url = `${this.baseApi}/species/${id}/children`;
+        const url = `${this.baseApi}/species/${id}/children?limit=20`;
         return this.http.get<RootObject<Taxa>>(url).pipe(
             map(rs => rs.results ? rs.results : undefined)
         );
@@ -30,7 +30,7 @@ export class GBIFApiService {
             return of(undefined);
         }
 
-        const url = `${this.baseApi}/taxa/${id}/media`;
+        const url = `${this.baseApi}/species/${id}/media`;
         return this.http.get<RootObject<Media>>(url).pipe(map(rs => {
             if (rs.results && rs.results.length) {
                 return rs.results.map(m => m.identifier);

@@ -16,6 +16,6 @@
 
     <ng-container *ngFor="let data of datas">
         <g app-item [id]="data.id" [x]="data.x" [y]="data.y" [text]="data.text" [actif]="data.actif"
-            [heigthWhenOpen]="heigthWhenOpen" (selected)="onItemSelected($event)"></g>
+            [mediaUrl]="data.mediaUrl" [heigthWhenOpen]="heigthWhenOpen" (selected)="onItemSelected($event)"></g>
     </ng-container>
 </svg>

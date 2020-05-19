@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { forkJoin, Observable, of } from 'rxjs';
+import { flatMap, map } from 'rxjs/operators';
+import { Taxa } from '../models/GBIF/taxa.model';
 import { DataItem } from '../models/tree/item.model';
 import { GBIFApiService } from './api/GBIF.api.service';
 import { CacheService } from './cache.service';
@@ -31,7 +32,15 @@ export class GBIFService extends DataService {
 
     protected loadChildren(id): Observable<Array<DataItem>> {
         return this.gbifApiService.getChildren(id).pipe(
-            map(datas => {
+            flatMap(datas => {
+                let mediaQueries = new Array<Observable<Array<string>>>();
+                if (datas.length) {
+                    mediaQueries = datas.map(d => this.gbifApiService.getMediaUrl(d.key));
+                }
+                return forkJoin([of(datas), ...mediaQueries]);
+            }),
+            map((info: Array<any>) => {
+                const datas = info[0] as Array<Taxa>;
                 if (datas) {
                     return datas.map(d => {
                         return {
@@ -40,7 +49,8 @@ export class GBIFService extends DataService {
                             shortName: d.canonicalName,
                             childrenLoaded: false,
                             parentId: d.parentKey,
-                            children: []
+                            children: [],
+                            mediaUrl: info.splice(1, 0) ? info.splice(1, 0).filter(x => x) : []
                         };
                     });
                 }

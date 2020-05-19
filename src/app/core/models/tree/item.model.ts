@@ -4,6 +4,7 @@ export interface BaseItem {
     shortName?: string;
     childrenLoaded: boolean;
     parentId: number;
+    mediaUrl?: Array<string>;
 }
 
 export interface DataItem extends BaseItem {
