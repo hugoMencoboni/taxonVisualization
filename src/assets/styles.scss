@@ -38,16 +38,20 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
         color: #009688;
     }
 
-    .taxa-family {
+    .taxa-order {
         color: #4caf50;
     }
 
-    .taxa-genus {
+    .taxa-family {
         color: #8bc34a;
     }
 
-    .taxa-species {
+    .taxa-genus {
         color: #cddc39;
+    }
+
+    .taxa-species {
+        color: #ffc107;
     }
 }
 

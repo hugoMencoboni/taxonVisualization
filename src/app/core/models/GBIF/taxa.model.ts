@@ -8,11 +8,13 @@ export interface Taxa {
     phylum: string;
     family: string;
     class: string;
+    order: string;
     genus: string;
     species: string;
     kingdomKey: number;
     phylumKey: number;
     classKey: number;
+    orderKey: number;
     familyKey: number;
     genusKey: number;
     speciesKey: number;

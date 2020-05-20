@@ -76,6 +76,10 @@ export class GBIFService extends DataService {
             textLine.push(`<strong class='taxa-class'>Class :</strong> ${taxon.class}`);
         }
 
+        if (taxon.order) {
+            textLine.push(`<strong class='taxa-order'>Order :</strong> ${taxon.order}`);
+        }
+
         if (taxon.family) {
             textLine.push(`<strong class='taxa-family'>Family :</strong> ${taxon.family}`);
         }
