@@ -1,5 +1,6 @@
 <div class="legendContent">
     <div *ngFor="let level of levelDescription">
-        <div [ngStyle]="{'color': level.color}">── {{ level.text }}</div>
+        <div [ngStyle]="{'font-weight': (level.active ? 'bold' : 'lighter'), 'color': level.color}">─── {{ level.text }}
+        </div>
     </div>
 </div>

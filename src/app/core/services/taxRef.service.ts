@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DataItem } from '../models/tree/item.model';
 import { TaxRefApiService } from './api/taxref.api.service';
@@ -16,20 +16,21 @@ export class TaxRefService extends DataService {
         super(cacheService);
     }
 
-    getSeed(): Observable<DataItem> {
+    getSeeds(): Array<DataItem> {
         const seed = {
             id: 183818, // 349525,
             text: 'Biota',
             shortName: 'Biota',
-            children: undefined,
+            children: [],
+            lvl: 1,
             childrenLoaded: false,
             parentId: null
         };
-        this.cacheService.cacheData(seed.id.toString(), seed);
-        return of(seed);
+        this.cacheService.cacheData(seed.id, seed);
+        return [seed];
     }
 
-    protected loadChildren(id, offset?: number): Observable<{ data: Array<DataItem>, fullyLoaded: boolean }> {
+    protected loadChildren(id: number, offset?: number): Observable<{ data: Array<DataItem>, fullyLoaded: boolean }> {
         return this.taxRefApiService.getChildren(id).pipe(
             map(datas => {
                 if (datas) {
@@ -42,7 +43,9 @@ export class TaxRefService extends DataService {
                                 shortName: d.vernacularClassName,
                                 childrenLoaded: false,
                                 parentId: d.parentId,
-                                children: undefined
+                                lvl: undefined,
+                                children: [],
+                                mediaUrl: []
                             };
                         }),
                         fullyLoaded: true

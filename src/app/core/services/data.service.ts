@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DataItem } from '../models/tree/item.model';
 import { CacheService } from './cache.service';
@@ -9,13 +9,34 @@ import { CacheService } from './cache.service';
 })
 export class DataService {
 
-    constructor(protected cacheService: CacheService) { }
+    private activeItem = new Subject<DataItem>();
+    private seed = new BehaviorSubject<DataItem>(this.getSeeds()[0]);
 
-    getSeed(): Observable<DataItem> {
-        return throwError(new Error('Implement a source!'));
+    activeItem$ = () => this.activeItem.asObservable();
+    activeLevel$ = () => this.activeItem.asObservable().pipe(map(data => data.lvl));
+
+    changeActiveItem = (newActiveItemId: number) => {
+        const cachedData = this.cacheService.getData(newActiveItemId);
+        this.activeItem.next(cachedData.data);
     }
 
-    getChildren(id: string): Observable<{ data: Array<DataItem>, fullyLoaded: boolean }> {
+    activeSeed$ = () => this.seed.asObservable();
+
+    changeSeed = (newSeedId: number) => {
+        const seeds = this.getSeeds();
+        const newSeed = seeds ? seeds.find(s => s.id === newSeedId) : undefined;
+        if (newSeed) {
+            this.seed.next(newSeed);
+        }
+    }
+
+    constructor(protected cacheService: CacheService) { }
+
+    getSeeds(): Array<DataItem> {
+        throw new Error('Implement a source!');
+    }
+
+    getChildren(id: number): Observable<{ data: Array<DataItem>, fullyLoaded: boolean }> {
         const cachedData = this.cacheService.getData(id);
 
         if (cachedData.cached && cachedData.data.childrenLoaded) {
@@ -25,7 +46,7 @@ export class DataService {
                 map(childrenData => {
                     const data = childrenData.data;
                     if (data) {
-                        data.forEach(d => this.cacheService.cacheData(d.id.toString(), d));
+                        data.forEach(d => this.cacheService.cacheData(d.id, d));
                     }
                     cachedData.data.children = data;
                     cachedData.data.childrenLoaded = true;
@@ -38,14 +59,14 @@ export class DataService {
         }
     }
 
-    getMoreChilds(id: string): Observable<{ data: Array<DataItem>, fullyLoaded: boolean }> {
+    getMoreChilds(id: number): Observable<{ data: Array<DataItem>, fullyLoaded: boolean }> {
         const cachedData = this.cacheService.getData(id);
         const currentChildLoaded = cachedData.data.children.length;
         return this.loadChildren(id, currentChildLoaded).pipe(
             map(childrenData => {
                 const data = childrenData.data;
                 if (data) {
-                    data.forEach(d => this.cacheService.cacheData(d.id.toString(), d));
+                    data.forEach(d => this.cacheService.cacheData(d.id, d));
                 }
                 cachedData.data.children.push(...data);
                 cachedData.data.hasMoreChilds = !childrenData.fullyLoaded;
@@ -56,7 +77,7 @@ export class DataService {
         );
     }
 
-    protected loadChildren(id: string, offset?: number): Observable<{ data: Array<DataItem>, fullyLoaded: boolean }> {
+    protected loadChildren(id: number, offset?: number): Observable<{ data: Array<DataItem>, fullyLoaded: boolean }> {
         return throwError(new Error('Implement a source!'));
     }
 

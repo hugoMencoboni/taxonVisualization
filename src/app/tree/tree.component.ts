@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { timer } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription, timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { DataItem, GetTreeItem, TreeItem } from '../core/models/tree/item.model';
 import { ColorService } from '../core/services/color.service';
@@ -10,7 +10,9 @@ import { DataService } from '../core/services/data.service';
   templateUrl: './tree.component.html',
   styleUrls: ['./tree.component.scss']
 })
-export class TreeComponent implements OnInit {
+export class TreeComponent implements OnInit, OnDestroy {
+  subscription = new Subscription();
+
   focusPositionX = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) / 2;
   focusPositionY = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) / 2;
 
@@ -24,9 +26,13 @@ export class TreeComponent implements OnInit {
   constructor(private dataService: DataService, private colorService: ColorService) { }
 
   ngOnInit() {
-    this.dataService.getSeed().pipe(take(1)).subscribe((seed: DataItem) => {
+    this.subscription = this.dataService.activeSeed$().subscribe((seed: DataItem) => {
       this.datas = [GetTreeItem(seed, this.focusPositionX, this.focusPositionY, null)];
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   moveRigth(): void {
@@ -57,6 +63,8 @@ export class TreeComponent implements OnInit {
   onItemSelected(id: number): void {
     const item = this.getItem(id);
 
+    this.dataService.changeActiveItem(id);
+
     // Ne garde que les élément de profondeur inférieur à l'élément ou frère de l'élément
     const itemsToRemove = this.datas.map(d => {
       if (d.depth >= item.depth && d.id !== item.id) {
@@ -82,7 +90,7 @@ export class TreeComponent implements OnInit {
     }
 
     if (!item.childrenLoaded) {
-      this.dataService.getChildren(item.id.toString()).pipe(take(1))
+      this.dataService.getChildren(item.id).pipe(take(1))
         .subscribe(
           (childrenData: { data: Array<DataItem>, fullyLoaded: boolean }) => {
             if (childrenData && childrenData.data) {
@@ -107,7 +115,7 @@ export class TreeComponent implements OnInit {
   addMoreChilds(id: number): void {
     const item = this.getItem(id);
     if (item.childrenLoaded && item.hasMoreChilds) {
-      this.dataService.getMoreChilds(item.id.toString()).pipe(take(1))
+      this.dataService.getMoreChilds(item.id).pipe(take(1))
         .subscribe(
           (childrenData: { data: Array<DataItem>, fullyLoaded: boolean }) => {
             if (childrenData && childrenData.data) {

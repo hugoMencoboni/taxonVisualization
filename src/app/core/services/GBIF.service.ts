@@ -19,7 +19,7 @@ export class GBIFService extends DataService {
         super(cacheService);
     }
 
-    getSeed(): Observable<DataItem> {
+    getSeeds(): Array<DataItem> {
         const seed = {
             id: 1,
             text: 'Animalia',
@@ -29,8 +29,8 @@ export class GBIFService extends DataService {
             childrenLoaded: false,
             parentId: null
         };
-        this.cacheService.cacheData(seed.id.toString(), seed);
-        return of(seed);
+        this.cacheService.cacheData(seed.id, seed);
+        return [seed];
     }
 
     getLevelDescription(): Array<{ text: string, color: string }> {

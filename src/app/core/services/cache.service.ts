@@ -6,9 +6,9 @@ import { DataItem } from '../models/tree/item.model';
     providedIn: 'root',
 })
 export class CacheService {
-    data = new Map<string, CacheModel>();
+    data = new Map<number, CacheModel>();
 
-    getData(id: string): CacheModel {
+    getData(id: number): CacheModel {
         if (this.data.has(id)) {
             return this.data.get(id);
         }
@@ -16,7 +16,7 @@ export class CacheService {
         return { data: undefined, cached: false };
     }
 
-    cacheData(id: string, data: DataItem): void {
+    cacheData(id: number, data: DataItem): void {
         this.data.set(id, { data, cached: true });
     }
 }
