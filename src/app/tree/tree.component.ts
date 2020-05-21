@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { DataItem, GetTreeItem, TreeItem } from '../core/models/tree/item.model';
 import { DataService } from '../core/services/data.service';
@@ -12,10 +13,10 @@ export class TreeComponent implements OnInit {
   focusPositionX = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) / 2;
   focusPositionY = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) / 2;
 
-  distanceX = 300;
-  distanceY = 100;
+  distanceX = 350;
+  distanceY = 120;
 
-  heigthWhenOpen = 200;
+  heigthWhenOpen = 220;
 
   datas: Array<TreeItem>;
 
@@ -49,22 +50,22 @@ export class TreeComponent implements OnInit {
 
   onItemSelected(id: number): void {
     const item = this.datas.find(x => x.id === id);
-    const itemPositionX = item.x;
-    const itemPositionY = item.y;
 
     // Ne garde que les élément de profondeur inférieur à l'élément ou frère de l'élément
     const itemsToRemove = this.datas.map(d => {
-      if (d.depth >= item.depth && d.parentId !== item.parentId) {
+      if (d.depth >= item.depth && d.id !== item.id) {
         return d.id;
       }
     }).filter(x => x);
 
     this.removeItems(itemsToRemove);
 
-    // Gestion du status
+    // Focus: décalage si l'élément contient des enfants
+    const itemPositionX = item.x;
+    const itemPositionY = item.y;
+    const focusPositionX = this.focusPositionX - +(item.childrenId.length > 0) * this.distanceX;
     this.datas.forEach(d => {
-      d.x -= itemPositionX - this.focusPositionX;
-      d.y -= itemPositionY - this.focusPositionY;
+      d.x -= itemPositionX - focusPositionX;
       d.actif = d.id === id ? !d.actif : false;
     });
 
@@ -84,6 +85,14 @@ export class TreeComponent implements OnInit {
 
             item.childrenLoaded = true;
             item.hasMoreChilds = !childrenData.fullyLoaded;
+
+            if (item.childrenId.length) {
+              timer(700).subscribe(() => {
+                this.datas.forEach(d => {
+                  d.x -= this.distanceX;
+                });
+              });
+            }
           }
         );
     }
