@@ -51,7 +51,7 @@ export class GBIFService extends DataService {
             flatMap(datas => {
                 let mediaQueries = new Array<Observable<Array<string>>>();
                 if (datas.length) {
-                    mediaQueries = datas.map(d => this.gbifApiService.getMediaUrl(d.key));
+                    mediaQueries = datas.filter(d => d.speciesKey).map(d => this.gbifApiService.getMediaUrl(d.key));
                 }
                 return forkJoin([of(datas), ...mediaQueries]);
             }),
