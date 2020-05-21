@@ -27,9 +27,7 @@ export class ItemComponent implements OnChanges, AfterViewInit {
     @Output() selected = new EventEmitter<number>();
     @Output() add = new EventEmitter<number>();
 
-    activeColor = '#3974b3';
-    inactiveColor = '#bababa';
-    hoverColor = '#3974b3';
+    @Input() color = '#3974b3';
     backgroundColor = 'white';
 
     textMargin = 20;
@@ -83,7 +81,7 @@ export class ItemComponent implements OnChanges, AfterViewInit {
             .attr('rx', 10)
             .attr('ry', 10)
             .attr('width', this.width)
-            .attr('stroke', this.activeColor)
+            .attr('stroke', this.color)
             .attr('stroke-width', 2)
             .attr('fill', this.backgroundColor);
 
@@ -100,18 +98,16 @@ export class ItemComponent implements OnChanges, AfterViewInit {
             .attr('cx', this.x + (this.initAtInfinit ? 3000 : 0))
             .attr('cy', this.y)
             .attr('r', this.r)
-            .attr('stroke', this.inactiveColor)
+            .attr('stroke', this.color)
             .attr('stroke-width', 2)
             .attr('fill', this.backgroundColor)
             .on('mouseover', () => {
                 this.d3_circle
-                    .attr('stroke-width', 4)
-                    .attr('stroke', this.hoverColor);
+                    .attr('stroke-width', 4);
             })
             .on('mouseout', () => {
                 this.d3_circle
-                    .attr('stroke-width', 2)
-                    .attr('stroke', this.actif ? this.activeColor : this.inactiveColor);
+                    .attr('stroke-width', 2);
             })
             .on('click', () => this.selected.emit(this.id));
 
@@ -119,12 +115,12 @@ export class ItemComponent implements OnChanges, AfterViewInit {
             .attr('cx', this.x + this.r + (this.initAtInfinit ? 3000 : 0))
             .attr('cy', this.y - this.r)
             .attr('r', this.addButton ? this.addButtonRadius : 0)
-            .attr('stroke', this.inactiveColor)
+            .attr('stroke', this.color)
             .attr('stroke-width', 1)
             .attr('fill', this.backgroundColor)
             .on('mouseover', () => {
                 this.d3_addButton
-                    .attr('fill', this.hoverColor);
+                    .attr('fill', this.color);
             })
             .on('mouseout', () => {
                 this.d3_addButton
@@ -144,15 +140,6 @@ export class ItemComponent implements OnChanges, AfterViewInit {
 
     statusChange(transitions = new Transitions()): void {
         if (this.actif) {
-            if (!transitions.circle) {
-                transitions.circle = this.d3_circle
-                    .transition()
-                    .duration(300);
-            }
-
-            transitions.circle
-                .attr('stroke', this.activeColor);
-
             if (!transitions.rectangle) {
                 transitions.rectangle = this.d3_rectangle
                     .transition()
@@ -173,16 +160,6 @@ export class ItemComponent implements OnChanges, AfterViewInit {
             transitions.container
                 .attr('height', this.heigthWhenOpen - this.r - this.textMargin);
         } else {
-            if (!transitions.circle) {
-                transitions.circle = this.d3_circle
-                    .transition()
-                    .delay(500)
-                    .duration(300);
-            }
-
-            transitions.circle
-                .attr('stroke', this.inactiveColor);
-
             if (!transitions.rectangle) {
                 transitions.rectangle = this.d3_rectangle
                     .transition()

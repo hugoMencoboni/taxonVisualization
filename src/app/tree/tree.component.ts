@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { DataItem, GetTreeItem, TreeItem } from '../core/models/tree/item.model';
+import { ColorService } from '../core/services/color.service';
 import { DataService } from '../core/services/data.service';
 
 @Component({
@@ -20,7 +21,7 @@ export class TreeComponent implements OnInit {
 
   datas: Array<TreeItem>;
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private colorService: ColorService) { }
 
   ngOnInit() {
     this.dataService.getSeed().pipe(take(1)).subscribe((seed: DataItem) => {
@@ -48,8 +49,13 @@ export class TreeComponent implements OnInit {
     return this.datas.find(x => x.id === id);
   }
 
+  getColor(id: number): string {
+    const item = this.getItem(id);
+    return this.colorService.getColor(item.lvl);
+  }
+
   onItemSelected(id: number): void {
-    const item = this.datas.find(x => x.id === id);
+    const item = this.getItem(id);
 
     // Ne garde que les élément de profondeur inférieur à l'élément ou frère de l'élément
     const itemsToRemove = this.datas.map(d => {
@@ -70,7 +76,7 @@ export class TreeComponent implements OnInit {
     });
 
     // Décalage des cousins
-    const parentId = this.datas.find(x => x.id === id).parentId;
+    const parentId = this.getItem(id).parentId;
     if (parentId) {
       this.updateChildPosition(this.datas.find(x => x.id === parentId));
     }
@@ -99,7 +105,7 @@ export class TreeComponent implements OnInit {
   }
 
   addMoreChilds(id: number): void {
-    const item = this.datas.find(x => x.id === id);
+    const item = this.getItem(id);
     if (item.childrenLoaded && item.hasMoreChilds) {
       this.dataService.getMoreChilds(item.id.toString()).pipe(take(1))
         .subscribe(

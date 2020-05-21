@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { DataService } from './core/services/data.service';
 import { GBIFService } from './core/services/GBIF.service';
+import { LegendComponent } from './legend/legend.component';
 import { InputModule } from './shared/form-base/input-base/input-base.component';
 import { SharedModule } from './shared/shared.module';
 import { ItemLinkComponent } from './tree/item-link/item-link.component';
@@ -15,6 +16,7 @@ import { TreeComponent } from './tree/tree.component';
   declarations: [
     AppComponent,
     TreeComponent,
+    LegendComponent,
     ItemComponent,
     ItemLinkComponent
   ],

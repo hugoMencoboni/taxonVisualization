@@ -11,7 +11,8 @@
         <ng-container *ngFor="let childId of data.childrenId">
             <ng-container *ngIf="getItem(childId)">
                 <g app-item-link [originX]="data.x" [originY]="data.y" [destinationX]="getItem(childId).x"
-                    [destinationY]="getItem(childId).y" [text]="getItem(childId).shortName"></g>
+                    [destinationY]="getItem(childId).y" [text]="getItem(childId).shortName"
+                    [inactiveColor]="getColor(getItem(childId).id)"></g>
             </ng-container>
         </ng-container>
     </ng-container>
@@ -19,6 +20,6 @@
     <ng-container *ngFor="let data of datas">
         <g app-item [id]="data.id" [x]="data.x" [y]="data.y" [text]="data.text" [actif]="data.actif"
             [mediaUrl]="data.mediaUrl" [heigthWhenOpen]="heigthWhenOpen" [addButton]="data.hasMoreChilds"
-            (selected)="onItemSelected($event)" (add)="addMoreChilds($event)"></g>
+            [color]="getColor(data.id)" (selected)="onItemSelected($event)" (add)="addMoreChilds($event)"></g>
     </ng-container>
 </svg>

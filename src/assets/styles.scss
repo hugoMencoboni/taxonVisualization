@@ -23,35 +23,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
     /* Handle */
     ::-webkit-scrollbar-thumb {
         border-radius: 10px;
-        background: #3974b3;
-    }
-
-    .taxa-kingdom {
-        color: #3974b3;
-    }
-
-    .taxa-phylum {
-        color: #00bcd4;
-    }
-
-    .taxa-class {
-        color: #009688;
-    }
-
-    .taxa-order {
-        color: #4caf50;
-    }
-
-    .taxa-family {
-        color: #8bc34a;
-    }
-
-    .taxa-genus {
-        color: #cddc39;
-    }
-
-    .taxa-species {
-        color: #ffc107;
+        background: black;
     }
 }
 

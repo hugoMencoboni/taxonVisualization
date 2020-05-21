@@ -5,6 +5,7 @@ export interface BaseItem {
     childrenLoaded: boolean;
     hasMoreChilds?: boolean;
     parentId: number;
+    lvl: number;
     mediaUrl?: Array<string>;
 }
 

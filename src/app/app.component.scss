@@ -12,6 +12,16 @@
     }
     .form {
         position: absolute;
+
+        background-color: white;
+        opacity: 0.8;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-radius: 15px;    
+    }
+    .legend {
+        position: absolute;
+        bottom: 0px;
     }
 }
 

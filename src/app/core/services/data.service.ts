@@ -59,4 +59,8 @@ export class DataService {
     protected loadChildren(id: string, offset?: number): Observable<{ data: Array<DataItem>, fullyLoaded: boolean }> {
         return throwError(new Error('Implement a source!'));
     }
+
+    getLevelDescription(): Array<{ text: string, color: string }> {
+        throw new Error('Implement a source!');
+    }
 }

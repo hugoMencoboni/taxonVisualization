@@ -20,8 +20,8 @@ export class ItemLinkComponent implements OnChanges, AfterViewInit {
 
   @Input() text: string;
 
-  activeColor = '#3974b3';
-  inactiveColor = '#bababa';
+  @Input() activeColor = '#3974b3';
+  @Input() inactiveColor = '#bababa';
 
   initAtInfinit = true;
   id = uuidv4();

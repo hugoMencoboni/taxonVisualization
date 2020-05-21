@@ -5,6 +5,7 @@ import { Taxa } from '../models/GBIF/taxa.model';
 import { DataItem } from '../models/tree/item.model';
 import { GBIFApiService } from './api/GBIF.api.service';
 import { CacheService } from './cache.service';
+import { ColorService } from './color.service';
 import { DataService } from './data.service';
 
 @Injectable()
@@ -12,7 +13,8 @@ export class GBIFService extends DataService {
 
     constructor(
         protected cacheService: CacheService,
-        private gbifApiService: GBIFApiService
+        private gbifApiService: GBIFApiService,
+        private colorService: ColorService
     ) {
         super(cacheService);
     }
@@ -23,11 +25,24 @@ export class GBIFService extends DataService {
             text: 'Animalia',
             shortName: 'Animalia',
             children: [],
+            lvl: 1,
             childrenLoaded: false,
             parentId: null
         };
         this.cacheService.cacheData(seed.id.toString(), seed);
         return of(seed);
+    }
+
+    getLevelDescription(): Array<{ text: string, color: string }> {
+        return [
+            { text: 'Kingdom', color: this.colorService.getColor(1) },
+            { text: 'Phylum', color: this.colorService.getColor(2) },
+            { text: 'Class', color: this.colorService.getColor(3) },
+            { text: 'Order', color: this.colorService.getColor(4) },
+            { text: 'Family', color: this.colorService.getColor(5) },
+            { text: 'Genus', color: this.colorService.getColor(6) },
+            { text: 'Species', color: this.colorService.getColor(7) }
+        ];
     }
 
     protected loadChildren(id, offset?: number): Observable<{ data: Array<DataItem>, fullyLoaded: boolean }> {
@@ -51,6 +66,7 @@ export class GBIFService extends DataService {
                                 shortName: d.canonicalName,
                                 childrenLoaded: false,
                                 parentId: d.parentKey,
+                                lvl: this.getLevel(d),
                                 children: [],
                                 mediaUrl: info.splice(1, 0) ? info.splice(1, 0).filter(x => x) : []
                             };
@@ -62,34 +78,64 @@ export class GBIFService extends DataService {
         );
     }
 
+    private getLevel(taxon: Taxa): number {
+        if (taxon.speciesKey) {
+            return 7;
+        }
+
+        if (taxon.genusKey) {
+            return 6;
+        }
+
+        if (taxon.familyKey) {
+            return 5;
+        }
+
+        if (taxon.orderKey) {
+            return 4;
+        }
+
+        if (taxon.classKey) {
+            return 3;
+        }
+
+        if (taxon.phylumKey) {
+            return 2;
+        }
+
+        if (taxon.kingdomKey) {
+            return 1;
+        }
+    }
+
     private getText(taxon: Taxa): string {
         const textLine = new Array<string>();
         if (taxon.kingdom) {
-            textLine.push(`<strong class='taxa-kingdom'>Kingdom :</strong> ${taxon.kingdom}`);
+            textLine.push(`<strong style='color:${this.colorService.getColor(1)}'>Kingdom :</strong> ${taxon.kingdom}`);
         }
 
         if (taxon.phylum) {
-            textLine.push(`<strong class='taxa-phylum'>Phylum :</strong> ${taxon.phylum}`);
+            textLine.push(`<strong style='color:${this.colorService.getColor(2)}'>Phylum :</strong> ${taxon.phylum}`);
         }
 
         if (taxon.class) {
-            textLine.push(`<strong class='taxa-class'>Class :</strong> ${taxon.class}`);
+            textLine.push(`<strong style='color:${this.colorService.getColor(3)}'>Class :</strong> ${taxon.class}`);
         }
 
         if (taxon.order) {
-            textLine.push(`<strong class='taxa-order'>Order :</strong> ${taxon.order}`);
+            textLine.push(`<strong style='color:${this.colorService.getColor(4)}'>Order :</strong> ${taxon.order}`);
         }
 
         if (taxon.family) {
-            textLine.push(`<strong class='taxa-family'>Family :</strong> ${taxon.family}`);
+            textLine.push(`<strong style='color:${this.colorService.getColor(5)}'>Family :</strong> ${taxon.family}`);
         }
 
         if (taxon.genus) {
-            textLine.push(`<strong class='taxa-genus'>Genus :</strong> ${taxon.genus}`);
+            textLine.push(`<strong style='color:${this.colorService.getColor(6)}'>Genus :</strong> ${taxon.genus}`);
         }
 
         if (taxon.species) {
-            textLine.push(`<strong class='taxa-species'>Species :</strong> ${taxon.species}`);
+            textLine.push(`<strong style='color:${this.colorService.getColor(7)}'>Species :</strong> ${taxon.species}`);
         }
 
         if (taxon.scientificName) {
