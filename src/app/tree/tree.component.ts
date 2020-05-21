@@ -101,7 +101,7 @@ export class TreeComponent implements OnInit, OnDestroy {
             item.hasMoreChilds = !childrenData.fullyLoaded;
 
             if (item.childrenId.length) {
-              timer(700).subscribe(() => {
+              timer(1200).subscribe(() => {
                 this.datas.forEach(d => {
                   d.x -= this.distanceX;
                 });
