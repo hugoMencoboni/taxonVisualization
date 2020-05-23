@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, Subject, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DataItem } from '../models/tree/item.model';
 import { CacheService } from './cache.service';
@@ -9,7 +9,7 @@ import { CacheService } from './cache.service';
 })
 export class DataService {
 
-    private activeItem = new Subject<DataItem>();
+    private activeItem = new BehaviorSubject<DataItem>(this.getSeeds()[0]);
     private seed = new BehaviorSubject<DataItem>(this.getSeeds()[0]);
 
     activeItem$ = () => this.activeItem.asObservable();
@@ -27,6 +27,7 @@ export class DataService {
         const newSeed = seeds ? seeds.find(s => s.id === newSeedId) : undefined;
         if (newSeed) {
             this.seed.next(newSeed);
+            this.activeItem.next(newSeed);
         }
     }
 
