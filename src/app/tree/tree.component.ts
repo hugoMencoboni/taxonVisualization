@@ -85,7 +85,7 @@ export class TreeComponent implements OnInit, OnDestroy {
 
     // Décalage des cousins
     const parentId = this.getItem(id).parentId;
-    if (parentId) {
+    if (parentId !== null && parentId !== undefined) {
       this.updateChildPosition(this.datas.find(x => x.id === parentId));
     }
 
