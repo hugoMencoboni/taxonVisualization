@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { RootObject } from '../../models/GBIF/apiResult.model';
 import { Media } from '../../models/GBIF/media.model';
@@ -15,10 +15,6 @@ export class GBIFApiService {
     constructor(private http: HttpClient) { }
 
     getChildren(id: number, limit?: number, offset?: number): Observable<Array<Taxa>> {
-        if (!id) {
-            return of(undefined);
-        }
-
         const url = `${this.baseApi}/species/${id}/children?limit=${limit}&offset=${offset}`;
         return this.http.get<RootObject<Taxa>>(url).pipe(
             map(rs => rs.results ? rs.results : undefined)
@@ -26,10 +22,6 @@ export class GBIFApiService {
     }
 
     getMediaUrl(id: number): Observable<Array<string>> {
-        if (!id) {
-            return of(undefined);
-        }
-
         const url = `${this.baseApi}/species/${id}/media`;
         return this.http.get<RootObject<Media>>(url).pipe(map(rs => {
             if (rs.results && rs.results.length) {

@@ -19,7 +19,7 @@ export class SelectBaseComponent implements OnInit, OnDestroy {
   @Input() options: Array<any>;
   @Input() displayedProperty = 'label'; // Indique quelle propriété des options est affichée
   @Input() valueProperty = 'id'; // Indique quelle propriété est associée au control lors du choix d'un option
-  @Input() emptyOptionEnable = true; // Option vide sélectionnable
+  @Input() emptyOptionEnable = false; // Option vide sélectionnable
   @Input() emptyOptionText = '--';
   @Input() selectMany = false; // Défini si plusieurs options peuvent être choisis
   @Input() errorList = new Array<{ code: string, message: string }>();

@@ -20,7 +20,7 @@ export class GBIFService extends DataService {
     }
 
     getSeeds(): Array<DataItem> {
-        const seed = {
+        const seeds = [{
             id: 1,
             text: 'Animalia',
             shortName: 'Animalia',
@@ -28,9 +28,36 @@ export class GBIFService extends DataService {
             lvl: 1,
             childrenLoaded: false,
             parentId: null
-        };
-        this.cacheService.cacheData(seed.id, seed);
-        return [seed];
+        },
+        {
+            id: 2,
+            text: 'Archaea',
+            shortName: 'Archaea',
+            children: [],
+            lvl: 1,
+            childrenLoaded: false,
+            parentId: null
+        },
+        {
+            id: 3,
+            text: 'Bacteria',
+            shortName: 'Bacteria',
+            children: [],
+            lvl: 1,
+            childrenLoaded: false,
+            parentId: null
+        },
+        {
+            id: 0,
+            text: 'Incertae sedis',
+            shortName: 'Incertae sedis',
+            children: [],
+            lvl: 1,
+            childrenLoaded: false,
+            parentId: null
+        }];
+        seeds.forEach(s => this.cacheService.cacheData(s.id, s));
+        return seeds;
     }
 
     getLevelDescription(): Array<{ text: string, color: string }> {
