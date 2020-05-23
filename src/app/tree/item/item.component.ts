@@ -40,6 +40,8 @@ export class ItemComponent implements OnChanges, AfterViewInit {
     private d3_container: d3.Selection<SVGElement, {}, HTMLElement, any>;
     private d3_text: d3.Selection<BaseType, {}, HTMLElement, any>;
     private d3_addButton: d3.Selection<SVGElement, {}, HTMLElement, any>;
+    private d3_clipPath: d3.Selection<SVGElement, {}, HTMLElement, any>;
+    private d3_image: d3.Selection<BaseType, {}, HTMLElement, any>;
 
     private drawed = false;
 
@@ -65,8 +67,12 @@ export class ItemComponent implements OnChanges, AfterViewInit {
             this.d3_addButton.attr('r', this.addButton ? this.addButtonRadius : 0);
         }
 
-        if (changes.text || changes.mediaUrl) {
-            this.d3_text.html(this.text + (this.mediaUrl || []).join(','));
+        if (changes.text) {
+            this.d3_text.html(this.text);
+        }
+
+        if (changes.mediaUrl) {
+            this.mediaChange(transition);
         }
     }
 
@@ -94,6 +100,23 @@ export class ItemComponent implements OnChanges, AfterViewInit {
             .html(this.text)
             .attr('fill', 'black');
 
+        this.d3_clipPath = d3.select(element)
+            .append('defs')
+            .append('clipPath')
+            .attr('id', `image-${this.id}`)
+            .append('circle')
+            .attr('cx', this.x + (this.initAtInfinit ? 3000 : 0))
+            .attr('cy', this.y)
+            .attr('r', this.r);
+
+        this.d3_image = d3.select(element).append('svg:image')
+            .attr('xlink:href', this.mediaUrl && this.mediaUrl.length ? this.mediaUrl[0] : '')
+            // .attr('width', this.r)
+            .attr('height', 2 * this.r)
+            .attr('x', this.x + (this.initAtInfinit ? 3000 : 0))
+            .attr('y', this.y)
+            .attr('clip-path', `url(#image-${this.id})`);
+
         this.d3_circle = d3.select(element).append('circle')
             .attr('cx', this.x + (this.initAtInfinit ? 3000 : 0))
             .attr('cy', this.y)
@@ -101,6 +124,7 @@ export class ItemComponent implements OnChanges, AfterViewInit {
             .attr('stroke', this.color)
             .attr('stroke-width', 2)
             .attr('fill', this.backgroundColor)
+            .attr('fill-opacity', this.mediaUrl && this.mediaUrl.length ? 0 : 1)
             .on('mouseover', () => {
                 this.d3_circle
                     .attr('stroke-width', 4);
@@ -214,6 +238,27 @@ export class ItemComponent implements OnChanges, AfterViewInit {
             .attr('cy', this.y)
             .attr('r', this.r);
 
+        if (!transitions.clipPath) {
+            transitions.clipPath = this.d3_clipPath
+                .transition()
+                .duration(750);
+        }
+
+        transitions.clipPath
+            .attr('cx', this.x)
+            .attr('cy', this.y)
+            .attr('r', this.r);
+
+        if (!transitions.image) {
+            transitions.image = this.d3_image
+                .transition()
+                .duration(750);
+        }
+
+        transitions.image
+            .attr('x', this.x - this.r)
+            .attr('y', this.y - this.r);
+
         if (!transitions.addButton) {
             transitions.addButton = this.d3_addButton
                 .transition()
@@ -224,6 +269,31 @@ export class ItemComponent implements OnChanges, AfterViewInit {
             .attr('cx', this.x + this.r)
             .attr('cy', this.y - this.r);
     }
+
+    mediaChange(transitions = new Transitions()): void {
+        if (!this.mediaUrl.length) {
+            return;
+        }
+
+        if (!transitions.image) {
+            transitions.image = this.d3_image
+                .transition()
+                .duration(750);
+        }
+
+        transitions.image
+            .attr('xlink:href', this.mediaUrl[0]);
+
+
+        if (!transitions.circle) {
+            transitions.image = this.d3_circle
+                .transition()
+                .duration(750);
+        }
+
+        transitions.circle
+            .attr('fill-opacity', this.mediaUrl.length ? 0 : 1);
+    }
 }
 
 class Transitions {
@@ -232,4 +302,6 @@ class Transitions {
     container: d3.Transition<SVGElement, {}, HTMLElement, any>;
     text: d3.Transition<SVGElement, {}, HTMLElement, any>;
     addButton: d3.Transition<SVGElement, {}, HTMLElement, any>;
+    clipPath: d3.Transition<SVGElement, {}, HTMLElement, any>;
+    image: d3.Transition<BaseType, {}, HTMLElement, any>;
 }

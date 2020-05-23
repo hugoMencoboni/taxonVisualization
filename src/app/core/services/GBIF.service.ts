@@ -85,6 +85,11 @@ export class GBIFService extends DataService {
             map((info: Array<any>) => {
                 const datas = info[0] as Array<Taxa>;
                 if (datas) {
+                    const mediaUrl = [];
+                    if (info.length > 1) {
+                        info.slice(1, info.length).filter(x => x).forEach(urls => mediaUrl.push(...urls));
+                    }
+
                     return {
                         data: datas.map(d => {
                             return {
@@ -95,7 +100,7 @@ export class GBIFService extends DataService {
                                 parentId: d.parentKey,
                                 lvl: this.getLevel(d),
                                 children: [],
-                                mediaUrl: info.splice(1, 0) ? info.splice(1, 0).filter(x => x) : []
+                                mediaUrl
                             };
                         }),
                         fullyLoaded: datas.length < nbrChildLoaded
