@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
+import { AttrTransition } from 'src/app/core/helpers/d3.helper';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
@@ -77,49 +78,25 @@ export class ItemLinkComponent implements OnChanges, AfterViewInit {
       .attr('startOffset', '100%')
       .text(this.text);
 
-    const transitions = new Transitions();
-    this.statusChange(transitions);
+    this.statusChange();
 
     if (this.initAtInfinit) {
-      this.changePosition(transitions);
+      this.changePosition();
     }
 
     this.drawed = true;
   }
 
-  statusChange(transitions = new Transitions()): void {
+  statusChange(): void {
     if (this.actif) {
-      if (!transitions.path) {
-        transitions.path = this.d3_path
-          .transition()
-          .duration(300);
-      }
-
-      transitions.path
-        .attr('stroke', this.activeColor);
+      this.d3_path.call(AttrTransition, [{ attr: 'stroke', newValue: this.activeColor }], 300);
     } else {
-
-      if (!transitions.path) {
-        transitions.path = this.d3_path
-          .transition()
-          .delay(500)
-          .duration(300);
-      }
-
-      transitions.path
-        .attr('stroke', this.inactiveColor);
+      this.d3_path.call(AttrTransition, [{ attr: 'stroke', newValue: this.inactiveColor }], 300, 500);
     }
   }
 
-  changePosition(transitions = new Transitions()): void {
-    if (!transitions.path) {
-      transitions.path = this.d3_path
-        .transition()
-        .duration(750);
-    }
-
-    transitions.path
-      .attr('d', this.setLine().toString());
+  changePosition(): void {
+    this.d3_path.call(AttrTransition, [{ attr: 'd', newValue: this.setLine().toString() }], 750);
   }
 
   private setLine(xShift = false, yShift = false): d3.Path {
@@ -138,10 +115,4 @@ export class ItemLinkComponent implements OnChanges, AfterViewInit {
 
     return path;
   }
-}
-
-class Transitions {
-  path: d3.Transition<SVGElement, {}, HTMLElement, any>;
-  text: d3.Transition<SVGElement, {}, HTMLElement, any>;
-  textPath: d3.Transition<SVGElement, {}, HTMLElement, any>;
 }
