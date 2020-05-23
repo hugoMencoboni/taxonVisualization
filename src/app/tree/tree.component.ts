@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription, timer } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { DataItem, GetTreeItem, TreeItem } from '../core/models/tree/item.model';
 import { ColorService } from '../core/services/color.service';
@@ -101,10 +101,8 @@ export class TreeComponent implements OnInit, OnDestroy {
             item.hasMoreChilds = !childrenData.fullyLoaded;
 
             if (item.childrenId.length) {
-              timer(1200).subscribe(() => {
-                this.datas.forEach(d => {
-                  d.x -= this.distanceX;
-                });
+              this.datas.forEach(d => {
+                d.x -= this.distanceX;
               });
             }
           }
