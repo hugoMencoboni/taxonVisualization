@@ -1,6 +1,9 @@
 <div class="legendContent">
-    <div *ngFor="let level of levelDescription">
-        <div [ngStyle]="{'font-weight': (level.active ? 'bold' : 'lighter'), 'color': level.color}">─── {{ level.text }}
+    <div *ngFor="let level of levelDescription" class="legendItem">
+        <div [ngStyle]="{'font-weight': (level.active ? 'bold' : 'lighter'), 'color': level.color}">{{ level.text }}
         </div>
+        <app-family-item class="form" [width]="80" [height]="60" [orientation]="'horizontal'" [color]="level.color"
+            [actif]="level.active">
+        </app-family-item>
     </div>
 </div>
