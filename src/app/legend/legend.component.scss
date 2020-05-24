@@ -1,6 +1,6 @@
 .legendContent {
     display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	flex-wrap: nowrap;
 	justify-content: flex-start;
 	align-items: stretch;
@@ -13,7 +13,13 @@
     border-radius: 15px;
 
     .legendItem {
-        margin-right: -15px;
+        margin-bottom: -15px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: center;
+        align-content: stretch;
 
         div {
             text-align: center;
