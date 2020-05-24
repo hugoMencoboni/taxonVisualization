@@ -167,8 +167,8 @@ export class ItemComponent implements OnChanges, AfterViewInit {
             this.d3_container.call(AttrTransition,
                 [{ attr: 'height', newValue: this.heigthWhenOpen - this.r - this.textMargin }], 300, 500);
         } else {
-            this.d3_rectangle.call(AttrTransition, [{ attr: 'height', newValue: 0 }], 0, 500);
-            this.d3_container.call(AttrTransition, [{ attr: 'height', newValue: 0 }], 0);
+            this.d3_rectangle.call(AttrTransition, [{ attr: 'height', newValue: 0 }], 300);
+            this.d3_container.call(AttrTransition, [{ attr: 'height', newValue: 0 }], 300);
         }
     }
 
