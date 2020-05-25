@@ -41,7 +41,7 @@ export class DataService {
         const cachedData = this.cacheService.getData(id);
 
         if (cachedData.cached && cachedData.data.childrenLoaded) {
-            return of({ data: cachedData.data.children, fullyLoaded: cachedData.data.hasMoreChilds });
+            return of({ data: cachedData.data.children, fullyLoaded: !cachedData.data.hasMoreChilds });
         } else {
             return this.loadChildren(id).pipe(
                 map(childrenData => {
