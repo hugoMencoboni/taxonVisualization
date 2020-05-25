@@ -1,11 +1,15 @@
-<div class="actions">
-    <a (click)="moveUp()" class="north icon-play3"></a>
-    <a (click)="moveLeft()" class="east icon-play3"></a>
-    <a (click)="moveRigth()" class="west icon-play3"></a>
-    <a (click)="moveDown()" class="south icon-play3"></a>
-</div>
+<svg id="tree" *ngIf="datas" preserveAspectRatio="xMinYMin meet" #tree class="noselect"
+    [ngStyle]="{'width': svgWidth, 'height': svgHeight, 'margin-left': svgPositionX, 'margin-top': svgPositionY}">
+    <style>
+        svg {
+            cursor: grab;
+        }
 
-<svg id="mainSvg" *ngIf="datas" preserveAspectRatio="xMinYMin meet">
+        g {
+            cursor: pointer;
+        }
+    </style>
+
     <!-- viewBox="0 0 500 500"-->
     <ng-container *ngFor="let data of datas">
         <ng-container *ngFor="let childId of data.childrenId">
