@@ -62,13 +62,13 @@ export class ItemLinkComponent implements OnChanges, AfterViewInit {
 
     this.d3_path = d3.select(element).append('path')
       .attr('fill', 'none')
-      .attr('stroke-width', 2)
+      .attr('stroke-width', 1)
       .attr('id', this.id)
       .attr('d', this.setLine(this.initAtInfinit).toString());
 
     this.d3_text = d3.select(element).append('text')
       .attr('class', 'linklabel')
-      .attr('dx', '-45')
+      .attr('dx', '-25')
       .attr('dy', '-5')
       .attr('text-anchor', 'end')
       .style('fill', this.inactiveColor);

@@ -27,10 +27,10 @@ export class TreeComponent implements OnInit, AfterViewInit, OnDestroy {
   focusPositionX: number;
   focusPositionY: number;
 
-  distanceX = 350;
-  distanceY = 120;
+  distanceX = 250;
+  distanceY = 80;
 
-  heigthWhenOpen = 220;
+  heigthWhenOpen = 150;
 
   datas: Array<TreeItem>;
 
@@ -134,25 +134,23 @@ export class TreeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.updateChildPosition(this.datas.find(x => x.id === parentId));
     }
 
-    if (!item.childrenLoaded) {
-      this.dataService.getChildren(item.id).pipe(take(1))
-        .subscribe(
-          (childrenData: { data: Array<DataItem>, fullyLoaded: boolean }) => {
-            if (childrenData && childrenData.data) {
-              this.addChild(item, childrenData.data);
-            }
-
-            item.childrenLoaded = true;
-            item.hasMoreChilds = !childrenData.fullyLoaded;
-
-            if (item.childrenId.length) {
-              this.datas.forEach(d => {
-                d.x -= this.distanceX;
-              });
-            }
+    this.dataService.getChildren(item.id).pipe(take(1))
+      .subscribe(
+        (childrenData: { data: Array<DataItem>, fullyLoaded: boolean }) => {
+          if (childrenData && childrenData.data) {
+            this.addChild(item, childrenData.data);
           }
-        );
-    }
+
+          item.childrenLoaded = true;
+          item.hasMoreChilds = !childrenData.fullyLoaded;
+
+          if (item.childrenId.length) {
+            this.datas.forEach(d => {
+              d.x -= this.distanceX;
+            });
+          }
+        }
+      );
   }
 
   addMoreChilds(id: number): void {

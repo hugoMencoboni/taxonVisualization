@@ -17,9 +17,9 @@ export class ItemComponent implements OnChanges, AfterViewInit {
 
     @Input() x: number;
     @Input() y: number;
-    @Input() r = 40;
+    @Input() r = 25;
 
-    @Input() width = 275;
+    @Input() width = 175;
     @Input() heigthWhenOpen;
 
     @Input() actif = false;
@@ -31,8 +31,8 @@ export class ItemComponent implements OnChanges, AfterViewInit {
     @Input() color = '#3974b3';
     backgroundColor = 'white';
 
-    textMargin = 20;
-    addButtonRadius = 5;
+    textMargin = 10;
+    addButtonRadius = 2;
 
     initAtInfinit = true;
 
@@ -84,11 +84,11 @@ export class ItemComponent implements OnChanges, AfterViewInit {
         this.d3_rectangle = d3.select(element).append('rect')
             .attr('x', this.x - this.width / 2)
             .attr('y', this.y)
-            .attr('rx', 10)
-            .attr('ry', 10)
+            .attr('rx', 8)
+            .attr('ry', 8)
             .attr('width', this.width)
             .attr('stroke', this.color)
-            .attr('stroke-width', 2)
+            .attr('stroke-width', 1)
             .attr('fill', this.backgroundColor);
 
         this.d3_container = d3.select(element).append('foreignObject')
@@ -122,16 +122,16 @@ export class ItemComponent implements OnChanges, AfterViewInit {
             .attr('cy', this.y)
             .attr('r', this.r)
             .attr('stroke', this.color)
-            .attr('stroke-width', 2)
+            .attr('stroke-width', 1)
             .attr('fill', this.backgroundColor)
             .attr('fill-opacity', this.mediaUrl && this.mediaUrl.length ? 0 : 1)
             .on('mouseover', () => {
                 this.d3_circle
-                    .attr('stroke-width', 4);
+                    .attr('stroke-width', 2);
             })
             .on('mouseout', () => {
                 this.d3_circle
-                    .attr('stroke-width', 2);
+                    .attr('stroke-width', 1);
             })
             .on('click', () => this.selected.emit(this.id));
 

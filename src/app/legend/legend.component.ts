@@ -10,7 +10,7 @@ import { DataService } from '../core/services/data.service';
 export class LegendComponent implements OnInit, OnDestroy {
     subscription = new Subscription();
 
-    itemWidth = 80;
+    itemWidth = 60;
     itemHeight = 60;
 
     levelDescription: Array<{ text: string, color: string, active?: boolean }>;
@@ -23,7 +23,7 @@ export class LegendComponent implements OnInit, OnDestroy {
             this.levelDescription.forEach((l, index: number) => l.active = index + 1 === activeLevel);
         });
 
-        this.itemHeight = window.screen.availHeight * 0.8 / this.levelDescription.length;
+        this.itemHeight = window.screen.availHeight * 0.6 / this.levelDescription.length;
     }
 
     ngOnDestroy(): void {
