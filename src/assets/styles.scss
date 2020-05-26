@@ -38,7 +38,15 @@ body {
               -ms-user-select: none; /* Internet Explorer/Edge */
                   user-select: none; /* Non-prefixed version, currently
                                         supported by Chrome, Edge, Opera and Firefox */
-      }
+    }
+
+    .overhead {
+        margin-top: 5px;
+        background-color: white;
+        opacity: 0.8;
+        border-radius: 15px; 
+        border: 1px solid #f2f2f2;
+    }
 }
 
 
