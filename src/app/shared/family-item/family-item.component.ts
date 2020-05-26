@@ -142,8 +142,8 @@ export class FamilyItemComponent implements OnChanges, AfterViewInit {
         );
 
         // petites ellypses origine
-        const originRX = littleEllipseRX - this.lineWidthWhenActive > 0 ? littleEllipseRX - this.lineWidthWhenActive : 1;
-        const originRY = littleEllipseRY - this.lineWidthWhenActive > 0 ? littleEllipseRY - this.lineWidthWhenActive : 1;
+        const originRX = littleEllipseRX - this.lineWidth > 0 ? littleEllipseRX - this.lineWidth : 1;
+        const originRY = littleEllipseRY - this.lineWidth > 0 ? littleEllipseRY - this.lineWidth : 1;
 
         this.elements.push(
             d3.select(element).append('ellipse')
