@@ -30,7 +30,7 @@ export class TreeComponent implements OnInit, AfterViewInit, OnDestroy {
   distanceX = 250;
   distanceY = 80;
 
-  heigthWhenOpen = 150;
+  heigthWhenOpen = 190;
 
   datas: Array<TreeItem>;
 
