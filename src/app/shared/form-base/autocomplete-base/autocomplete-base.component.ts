@@ -19,6 +19,7 @@ export class AutoCompleteBaseComponent implements OnInit, OnChanges, OnDestroy {
     @Input() label: string;
     @Input() control: FormControl;
     @Input() displayedProperty = 'label'; // Indique quelle propriété des options est affichée
+    @Input() displayedProperty2 = 'label2'; // Labbel suplémentaire (optionnel)
     @Input() valueProperty = 'id'; // Indique quelle propriété est associée au control lors du choix d'un option
     @Input() filterFunction: (searchPattern) => Observable<Array<any>>;
     @Input() errorList = new Array<{ code: string, message: string }>();
@@ -75,7 +76,9 @@ export class AutoCompleteBaseComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     displayFn(value: AutocompleteOption): string {
-        return value && value.data ? value.data[this.displayedProperty] : '';
+        const label = value?.data[this.displayedProperty];
+        const label2 = value?.data[this.displayedProperty2];
+        return label ?? label2 ?? '';
     }
 
     getErrorMessage(): string {
@@ -142,7 +145,7 @@ export class AutoCompleteBaseComponent implements OnInit, OnChanges, OnDestroy {
 
     private addEnforceSelectionValidator(): void {
         const ctrlValidators = this.control.validator;
-        this.control.setValidators([ctrlValidators, this.EnforceSelectionValidator(this.internalControl)]);
+        this.control.setValidators([ctrlValidators, this.EnforceSelectionValidator(this.internalControl)].filter(ctrl => ctrl));
     }
 
     private EnforceSelectionValidator(internalControl: FormControl): ValidatorFn {

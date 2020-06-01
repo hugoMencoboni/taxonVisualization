@@ -19,6 +19,10 @@ export class GBIFService extends DataService {
         super(cacheService);
     }
 
+    search(pattern: string, parentId?: string): Observable<Array<any>> {
+        return this.gbifApiService.search(pattern, parentId);
+    }
+
     getSeeds(): Array<DataItem> {
         const seeds = [{
             id: 1,

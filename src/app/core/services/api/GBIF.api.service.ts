@@ -14,6 +14,13 @@ export class GBIFApiService {
 
     constructor(private http: HttpClient) { }
 
+    search(pattern: string, parentId?: string): Observable<Array<Taxa>> {
+        const url = `https://api.gbif.org/v1/species/search?q=${pattern}&datasetKey${parentId}`;
+        return this.http.get<RootObject<Taxa>>(url).pipe(
+            map(rs => rs.results ? rs.results : undefined)
+        );
+    }
+
     getChildren(id: number, limit?: number, offset?: number): Observable<Array<Taxa>> {
         const url = `${this.baseApi}/species/${id}/children?limit=${limit}&offset=${offset}`;
         return this.http.get<RootObject<Taxa>>(url).pipe(

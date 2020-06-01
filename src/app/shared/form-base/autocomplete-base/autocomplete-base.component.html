@@ -17,9 +17,13 @@
 
     <div *ngIf="pending" class='loader'></div>
 
-    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)" autoActiveFirstOption>
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)" autoActiveFirstOption
+        [panelWidth]="'fit-content'">
         <mat-option *ngFor="let option of filteredOptions$ | async" [value]="option">
-            {{ option?.data[displayedProperty] }}
+            <strong>{{ option?.data[displayedProperty] }}</strong>
+            <ng-container *ngIf="option?.data[displayedProperty] && option?.data[displayedProperty2]"> - </ng-container>
+            <ng-container *ngIf="option?.data[displayedProperty2]"><em>{{ option?.data[displayedProperty2] }}</em>
+            </ng-container>
         </mat-option>
     </mat-autocomplete>
 </div>

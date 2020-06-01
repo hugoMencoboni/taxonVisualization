@@ -33,6 +33,10 @@ export class DataService {
 
     constructor(protected cacheService: CacheService) { }
 
+    search(pattern: string, parentId?: string): Observable<Array<any>> {
+        throw new Error('Implement a source!');
+    }
+
     getSeeds(): Array<DataItem> {
         throw new Error('Implement a source!');
     }

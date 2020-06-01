@@ -7,6 +7,7 @@ import { DataService } from './core/services/data.service';
 import { GBIFService } from './core/services/GBIF.service';
 import { FiltersComponent } from './filters/filters.component';
 import { LegendComponent } from './legend/legend.component';
+import { AutocompleteModule } from './shared/form-base/autocomplete-base/autocomplete-base.component';
 import { SelectModule } from './shared/form-base/select-base/select-base.component';
 import { SharedModule } from './shared/shared.module';
 import { ItemLinkComponent } from './tree/item-link/item-link.component';
@@ -27,7 +28,8 @@ import { TreeComponent } from './tree/tree.component';
     ReactiveFormsModule,
     SharedModule,
     HttpClientModule,
-    SelectModule
+    SelectModule,
+    AutocompleteModule
   ],
   providers: [
     {

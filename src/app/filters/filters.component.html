@@ -1,3 +1,5 @@
 <div [formGroup]="filters">
     <base-select [label]="seedLabel" [control]="filters.controls.seed" [options]="seeds"></base-select>
+    <base-autocomplete [label]="searchLabel" [control]="filters.controls.search" [filterFunction]="searchCallback">
+    </base-autocomplete>
 </div>
