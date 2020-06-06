@@ -34,6 +34,10 @@ export class FiltersComponent implements OnInit {
         this.subscriptions.add(
             this.filters.controls.seed.valueChanges.subscribe(newSeed => this.dataService.changeSeed(newSeed))
         );
+
+        this.subscriptions.add(
+            this.filters.controls.search.valueChanges.subscribe(id => (id || id === 0) ? this.dataService.loadItem(id) : null)
+        );
     }
 
     searchCallback = (searchPattern: string) => {

@@ -16,21 +16,26 @@ export class GBIFApiService {
 
     search(pattern: string, parentId?: string): Observable<Array<Taxa>> {
         const url = `https://api.gbif.org/v1/species/search?q=${pattern}&datasetKey${parentId}`;
-        return this.http.get<RootObject<Taxa>>(url).pipe(
+        return this.http.get<RootObject<Array<Taxa>>>(url).pipe(
             map(rs => rs.results ? rs.results : undefined)
         );
     }
 
+    getItem(id: number): Observable<Taxa> {
+        const url = `https://api.gbif.org/v1/species/${id}`;
+        return this.http.get<Taxa>(url);
+    }
+
     getChildren(id: number, limit?: number, offset?: number): Observable<Array<Taxa>> {
         const url = `${this.baseApi}/species/${id}/children?limit=${limit}&offset=${offset}`;
-        return this.http.get<RootObject<Taxa>>(url).pipe(
+        return this.http.get<RootObject<Array<Taxa>>>(url).pipe(
             map(rs => rs.results ? rs.results : undefined)
         );
     }
 
     getMediaUrl(id: number): Observable<Array<string>> {
         const url = `${this.baseApi}/species/${id}/media`;
-        return this.http.get<RootObject<Media>>(url).pipe(map(rs => {
+        return this.http.get<RootObject<Array<Media>>>(url).pipe(map(rs => {
             if (rs.results && rs.results.length) {
                 return rs.results.map(m => m.identifier);
             }

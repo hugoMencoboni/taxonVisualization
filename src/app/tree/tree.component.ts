@@ -53,6 +53,11 @@ export class TreeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.datas = [GetTreeItem(seed, this.focusPositionX, this.focusPositionY, null)];
     });
 
+    this.subscription.add(this.dataService.newDatas$().subscribe((newDatas: Array<DataItem>) => {
+      // TODO: voir comment tracer ces éléments
+      this.datas = newDatas.map(d => GetTreeItem(d, 0, 0, undefined));
+    }));
+
     this.subscription.add(this.svgPosition$.asObservable().pipe(pairwise()).subscribe(([previousPos, newPos]) => {
       if (previousPos) {
         const diffX = newPos.x - previousPos.x;
@@ -204,7 +209,7 @@ export class TreeComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  private getChildPosition(id: number, parent?: TreeItem): { x: number, y: number } {
+  private getChildPosition(id: number, parent: TreeItem): { x: number, y: number } {
     parent.childrenId = parent.childrenId || [];
     const childIndex = parent.childrenId.indexOf(id);
     const previousChild = childIndex === 0 ? undefined : this.datas.find(x => x.id === parent.childrenId[childIndex - 1]);

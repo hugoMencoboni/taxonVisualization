@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DataItem } from '../models/tree/item.model';
 import { CacheService } from './cache.service';
@@ -9,9 +9,11 @@ import { CacheService } from './cache.service';
 })
 export class DataService {
 
-    private activeItem = new BehaviorSubject<DataItem>(this.getSeeds()[0]);
-    private seed = new BehaviorSubject<DataItem>(this.getSeeds()[0]);
+    protected activeItem = new BehaviorSubject<DataItem>(this.getSeeds()[0]);
+    protected seed = new BehaviorSubject<DataItem>(this.getSeeds()[0]);
+    protected newDatas = new Subject<Array<DataItem>>();
 
+    newDatas$ = () => this.newDatas.asObservable();
     activeItem$ = () => this.activeItem.asObservable();
     activeLevel$ = () => this.activeItem.asObservable().pipe(map(data => data.lvl));
 
@@ -34,6 +36,10 @@ export class DataService {
     constructor(protected cacheService: CacheService) { }
 
     search(pattern: string, parentId?: string): Observable<Array<any>> {
+        throw new Error('Implement a source!');
+    }
+
+    loadItem(id: number): void {
         throw new Error('Implement a source!');
     }
 

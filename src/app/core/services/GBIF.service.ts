@@ -23,6 +23,43 @@ export class GBIFService extends DataService {
         return this.gbifApiService.search(pattern, parentId);
     }
 
+    loadItem(id: number): void {
+        this.loadItemInfo(id).pipe(
+            flatMap(datas => {
+                let mediaQueries = new Array<Observable<{ urls: Array<string>, speciesKey: number }>>();
+                if (datas.length) {
+                    mediaQueries = datas.filter(d => d.speciesKey).map(d => {
+                        return this.gbifApiService.getMediaUrl(d.key)
+                            .pipe(map(urls => ({ urls, speciesKey: d.speciesKey })));
+                    });
+                }
+                return forkJoin([of(datas), ...mediaQueries]);
+            }),
+            map((info: Array<any>): Array<DataItem> => {
+                const datas = info[0] as Array<Taxa>;
+                const medias = info.slice(1, info.length) as Array<{ urls: Array<string>, speciesKey: number }>;
+
+                return datas.map(d => {
+                    return {
+                        id: d.key,
+                        text: this.getText(d),
+                        shortName: d.canonicalName,
+                        childrenLoaded: true,
+                        parentId: d.parentKey,
+                        lvl: this.getLevel(d),
+                        children: [],
+                        mediaUrl: medias.find(m => m.speciesKey === d.speciesKey)?.urls
+                    };
+                });
+            })
+        ).subscribe((data: Array<DataItem>) => {
+            data.forEach(d => this.cacheService.cacheData(d.id, d));
+            this.newDatas.next(data);
+            this.seed.next(data.find(d => !d.parentId));
+            this.activeItem.next(data.find(d => d.id === id));
+        });
+    }
+
     getSeeds(): Array<DataItem> {
         const seeds = [{
             id: 1,
@@ -74,6 +111,18 @@ export class GBIFService extends DataService {
             { text: 'Genus', color: this.colorService.getColor(6) },
             { text: 'Species', color: this.colorService.getColor(7) }
         ];
+    }
+
+    protected loadItemInfo(id: number): Observable<Array<Taxa>> {
+        return this.gbifApiService.getItem(id).pipe(
+            flatMap((item: Taxa): Observable<Array<Taxa>> => {
+                if (item && item.parentKey) {
+                    return this.loadItemInfo(item.parentKey).pipe(map((parents: Array<Taxa>): Array<Taxa> => [...parents, item]));
+                }
+
+                return of([item]);
+            })
+        );
     }
 
     protected loadChildren(id, offset?: number): Observable<{ data: Array<DataItem>, fullyLoaded: boolean }> {
