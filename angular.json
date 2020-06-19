@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "taxons": {
+    "taxonVisualization": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/taxons",
+            "outputPath": "dist/taxonVisualization",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -64,18 +64,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "taxons:build"
+            "browserTarget": "taxonVisualization:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "taxons:build:production"
+              "browserTarget": "taxonVisualization:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "taxons:build"
+            "browserTarget": "taxonVisualization:build"
           }
         },
         "test": {
@@ -113,11 +113,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "taxons:serve"
+            "devServerTarget": "taxonVisualization:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "taxons:serve:production"
+              "devServerTarget": "taxonVisualization:serve:production"
             }
           }
         },
@@ -128,7 +128,7 @@
       }
     }
   },
-  "defaultProject": "taxons",
+  "defaultProject": "taxonVisualization",
   "schematics": {
     "@schematics/angular:component": {
       "styleext": "scss"
