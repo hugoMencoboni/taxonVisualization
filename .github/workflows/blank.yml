@@ -24,14 +24,8 @@ jobs:
       run: |
         npm install
         
-    - name: Build
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        npm run ng build --prod --base-href "taxons"
-
     - name: Deploy
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        npm run ng --deploy --dir=dist/taxons --name="hugoMencoboni" --email=hugo.mencoboni@gmail.com
+        npm run ng -- deploy --base-href=./ --name="hugoMencoboni" --email=hugo.mencoboni@gmail.com
