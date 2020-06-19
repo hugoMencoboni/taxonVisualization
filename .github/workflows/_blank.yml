@@ -34,4 +34,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        npm run ngh --dir=dist/taxons --name="hugoMencoboni" --email=hugo.mencoboni@gmail.com
+        npm run ng --deploy --dir=dist/taxons --name="hugoMencoboni" --email=hugo.mencoboni@gmail.com
