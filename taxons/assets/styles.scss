@@ -1,0 +1,52 @@
+@import '_material.scss';
+
+body {
+    font-family: monospace;
+}
+html, body { height: 100%; }
+body { 
+    margin: 0; 
+    font-size: small;
+    font-family: Roboto, "Helvetica Neue", sans-serif; 
+    overflow: hidden;
+
+    foreignObject {
+        overflow: auto;
+    }
+
+    /* width */
+    ::-webkit-scrollbar {
+        width: 2px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background: black;
+    }
+
+    .noselect {
+        -webkit-touch-callout: none; /* iOS Safari */
+          -webkit-user-select: none; /* Safari */
+           -khtml-user-select: none; /* Konqueror HTML */
+             -moz-user-select: none; /* Old versions of Firefox */
+              -ms-user-select: none; /* Internet Explorer/Edge */
+                  user-select: none; /* Non-prefixed version, currently
+                                        supported by Chrome, Edge, Opera and Firefox */
+    }
+
+    .overhead {
+        margin-top: 5px;
+        background-color: white;
+        opacity: 0.8;
+        border-radius: 15px; 
+        border: 1px solid #f2f2f2;
+    }
+}
+
+
