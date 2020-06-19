@@ -18,14 +18,19 @@ export class TreeComponent implements OnInit, AfterViewInit, OnDestroy {
   public svg: ElementRef;
   svgWidth: number;
   svgHeight: number;
-  svgInitPositionX: number;
-  svgInitPositionY: number;
-  svgPositionX: number;
-  svgPositionY: number;
   svgPosition$ = new Subject<{ x: number, y: number }>();
 
   focusPositionX: number;
   focusPositionY: number;
+
+  svgPositionX: number;
+  svgPositionY: number;
+
+  focusInitPositionX: number;
+  focusInitPositionY: number;
+
+  svgInitPositionX: number;
+  svgInitPositionY: number;
 
   distanceX = 250;
   distanceY = 80;
@@ -37,15 +42,19 @@ export class TreeComponent implements OnInit, AfterViewInit, OnDestroy {
   onMove = false;
 
   constructor(private dataService: DataService, private colorService: ColorService) {
-    const svgWidth = 10000;
-    this.svgWidth = svgWidth;
-    this.svgHeight = svgWidth;
-    this.svgPositionX = (-1) * svgWidth / 2;
-    this.svgPositionY = (-1) * svgWidth / 2;
-    this.svgInitPositionX = this.svgPositionX;
-    this.svgInitPositionY = this.svgPositionY;
-    this.focusPositionX = svgWidth / 2 + (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) / 2;
-    this.focusPositionY = svgWidth / 2 + (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) / 2;
+    const svgDim = 10000;
+    this.svgWidth = svgDim;
+    this.svgHeight = svgDim;
+
+    this.svgInitPositionX = (-1) * svgDim / 2;
+    this.svgInitPositionY = (-1) * svgDim / 2;
+    this.svgPositionX = this.svgInitPositionX;
+    this.svgPositionY = this.svgInitPositionY;
+
+    this.focusInitPositionX = svgDim / 2 + (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) / 2;
+    this.focusInitPositionY = svgDim / 2 + (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) / 2;
+    this.focusPositionX = this.focusInitPositionX;
+    this.focusPositionY = this.focusInitPositionY;
   }
 
   ngOnInit() {
@@ -54,8 +63,25 @@ export class TreeComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     this.subscription.add(this.dataService.newDatas$().subscribe((newDatas: Array<DataItem>) => {
-      // TODO: voir comment tracer ces éléments
-      this.datas = newDatas.map(d => GetTreeItem(d, 0, 0, undefined));
+      const newSeedData = newDatas.find(d => !d.parentId);
+      const newSeed = GetTreeItem(newSeedData, this.focusInitPositionX, this.focusInitPositionY, null);
+      this.datas = [newSeed];
+
+      let parent = newSeed;
+      let child = newDatas.find(d => d.parentId === parent.id);
+      while (child) {
+        this.addChild(parent, [child]);
+        parent = this.datas.find(d => d.id === child.id);
+        child = newDatas.find(d => d.parentId === parent.id);
+      }
+
+      this.svgPositionX = this.svgInitPositionX;
+      this.svgPositionY = this.svgInitPositionY;
+
+      this.focusPositionX = this.focusInitPositionX;
+      this.focusPositionY = this.focusInitPositionY;
+
+      this.onItemSelected(newDatas.find(d => !d.children.length).id);
     }));
 
     this.subscription.add(this.svgPosition$.asObservable().pipe(pairwise()).subscribe(([previousPos, newPos]) => {

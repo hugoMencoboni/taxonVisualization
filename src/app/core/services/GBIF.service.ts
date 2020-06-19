@@ -54,9 +54,9 @@ export class GBIFService extends DataService {
             })
         ).subscribe((data: Array<DataItem>) => {
             data.forEach(d => this.cacheService.cacheData(d.id, d));
+            // this.seed.next(data.find(d => !d.parentId));
+            // this.activeItem.next(data.find(d => d.id === id));
             this.newDatas.next(data);
-            this.seed.next(data.find(d => !d.parentId));
-            this.activeItem.next(data.find(d => d.id === id));
         });
     }
 
@@ -117,7 +117,8 @@ export class GBIFService extends DataService {
         return this.gbifApiService.getItem(id).pipe(
             flatMap((item: Taxa): Observable<Array<Taxa>> => {
                 if (item && item.parentKey) {
-                    return this.loadItemInfo(item.parentKey).pipe(map((parents: Array<Taxa>): Array<Taxa> => [...parents, item]));
+                    return this.loadItemInfo(item.parentKey)
+                        .pipe(map((parents: Array<Taxa>): Array<Taxa> => [...parents, item]));
                 }
 
                 return of([item]);
