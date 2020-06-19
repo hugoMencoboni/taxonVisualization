@@ -4,6 +4,6 @@ Taxonomy representation using a mixt of **[Angular][angularLink]** and **[D3.js]
 
 Accessible at **[hugomencoboni.github.io/taxon/][deployedWebSite]**.
 
-[deployedWebSite]: hugomencoboni.github.io/taxon/
+[deployedWebSite]: https://hugomencoboni.github.io/taxon/
 [angularLink]: https://angular.io/
 [d3Link]: https://d3js.org/
