@@ -106,9 +106,20 @@ export class TreeComponent implements OnInit, AfterViewInit, OnDestroy {
           this.onMove = true;
         }
       })
+      .on('touchstart', () => {
+        if (d3.event.target.id === 'tree') {
+          this.onMove = true;
+        }
+      })
       .on('mouseup', () => this.onMove = false)
       .on('mouseleave', () => this.onMove = false)
+      .on('touchend', () => this.onMove = false)
       .on('mouseout', () => {
+        if (!d3.event.relatedTarget) {
+          this.onMove = false;
+        }
+      })
+      .on('touchleave', () => {
         if (!d3.event.relatedTarget) {
           this.onMove = false;
         }
@@ -117,6 +128,13 @@ export class TreeComponent implements OnInit, AfterViewInit, OnDestroy {
     window.addEventListener('mousemove', (evt) => {
       if (this.onMove) {
         this.svgPosition$.next({ x: evt.screenX, y: evt.screenY });
+      }
+    });
+
+    window.addEventListener('touchmove', (evt) => {
+      if (this.onMove) {
+        const touch = evt.touches[0] || evt.changedTouches[0];
+        this.svgPosition$.next({ x: touch.screenX, y: touch.screenY });
       }
     });
   }
