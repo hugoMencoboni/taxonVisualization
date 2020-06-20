@@ -3,7 +3,8 @@
         <app-family-item class="form" [width]="itemWidth" [height]="itemHeight" [color]="level.color"
             [actif]="level.active">
         </app-family-item>
-        <div [ngStyle]="{'font-weight': (level.active ? 'bold' : 'lighter'), 'color': level.color}">{{ level.text }}
+        <div [ngStyle]="{'font-weight': (level.active ? 'bold' : 'lighter'), 'color': level.color}" class="label">
+            {{ level.text }}
         </div>
     </div>
 </div>
