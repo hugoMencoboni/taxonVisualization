@@ -1,6 +1,6 @@
 {
-  "name": "taxonVisualization",
-  "short_name": "taxonVisualization",
+  "name": "Taxon visualization",
+  "short_name": "Taxon visualization",
   "theme_color": "#6c4975",
   "background_color": "#f2f2f2",
   "display": "standalone",
