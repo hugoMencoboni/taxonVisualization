@@ -13,6 +13,8 @@ import { SharedModule } from './shared/shared.module';
 import { ItemLinkComponent } from './tree/item-link/item-link.component';
 import { ItemComponent } from './tree/item/item.component';
 import { TreeComponent } from './tree/tree.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,8 @@ import { TreeComponent } from './tree/tree.component';
     SharedModule,
     HttpClientModule,
     SelectModule,
-    AutocompleteModule
+    AutocompleteModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     {
