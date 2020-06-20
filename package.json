@@ -47,6 +47,7 @@
     "@angular/platform-browser": "~9.1.1",
     "@angular/platform-browser-dynamic": "~9.1.1",
     "@angular/router": "~9.1.1",
+    "@angular/service-worker": "~9.1.1",
     "angular-cli-ghpages": "^0.6.2",
     "angular2-text-mask": "^9.0.0",
     "d3": "^5.16.0",
