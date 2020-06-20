@@ -14,10 +14,25 @@
         margin-top: 5px;
         position: absolute;
         left: 150px;
+
+        @media screen and (max-width: 400px) {
+            width: 60%;
+            position: absolute;
+            left: unset;
+            right: 0px;
+        }
     }
     .legend {
         position: absolute;
         left: 5px;
+
+        @media screen and (min-width: 300px) and (max-width: 400px) {
+            width: 100px;
+        }
+
+        @media screen and (max-width: 300px) {
+            width: 85px;
+        }
     }
 }
 
