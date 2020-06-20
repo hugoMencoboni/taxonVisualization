@@ -36,7 +36,6 @@ export class ItemComponent implements OnChanges, AfterViewInit {
 
     initAtInfinit = true;
 
-    private d3_rectangle: d3.Selection<SVGElement, {}, HTMLElement, any>;
     private d3_circle: d3.Selection<SVGElement, {}, HTMLElement, any>;
     private d3_container: d3.Selection<SVGElement, {}, HTMLElement, any>;
     private d3_text: d3.Selection<BaseType, {}, HTMLElement, any>;
@@ -80,16 +79,6 @@ export class ItemComponent implements OnChanges, AfterViewInit {
         if (!this.itemContainer) { return; }
 
         const element = this.itemContainer.nativeElement;
-
-        this.d3_rectangle = d3.select(element).append('rect')
-            .attr('x', this.x - this.width / 2)
-            .attr('y', this.y)
-            .attr('rx', 8)
-            .attr('ry', 8)
-            .attr('width', this.width)
-            .attr('stroke', this.color)
-            .attr('stroke-width', 1)
-            .attr('fill', this.backgroundColor);
 
         this.d3_container = d3.select(element).append('foreignObject')
             .attr('x', this.x - (this.width - this.textMargin) / 2)
@@ -163,22 +152,14 @@ export class ItemComponent implements OnChanges, AfterViewInit {
 
     statusChange(): void {
         if (this.actif) {
-            this.d3_rectangle.call(AttrTransition, [{ attr: 'height', newValue: this.heigthWhenOpen }], 300, 500);
             this.d3_container.call(AttrTransition,
                 [{ attr: 'height', newValue: this.heigthWhenOpen - this.r - this.textMargin }], 300, 500);
         } else {
-            this.d3_rectangle.call(AttrTransition, [{ attr: 'height', newValue: 0 }], 300);
             this.d3_container.call(AttrTransition, [{ attr: 'height', newValue: 0 }], 300);
         }
     }
 
     changePosition(): void {
-        this.d3_rectangle.call(AttrTransition, [
-            { attr: 'x', newValue: this.x - this.width / 2 },
-            { attr: 'y', newValue: this.y },
-            { attr: 'width', newValue: this.width }
-        ], 750);
-
         this.d3_container.call(AttrTransition, [
             { attr: 'x', newValue: this.x - (this.width - this.textMargin) / 2 },
             { attr: 'y', newValue: this.y + this.r + this.textMargin / 2 },
