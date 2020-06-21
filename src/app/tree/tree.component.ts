@@ -51,8 +51,10 @@ export class TreeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.svgPositionX = this.svgInitPositionX;
     this.svgPositionY = this.svgInitPositionY;
 
-    this.focusInitPositionX = svgDim / 2 + (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) / 2;
-    this.focusInitPositionY = svgDim / 2 + (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) / 2;
+    const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    const screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    this.focusInitPositionX = svgDim / 2 + (screenWidth > 600 ? screenWidth * 0.5 : screenWidth * 0.75);
+    this.focusInitPositionY = svgDim / 2 + (screenHeight > 600 ? screenHeight * 0.5 : screenHeight * 0.75);
     this.focusPositionX = this.focusInitPositionX;
     this.focusPositionY = this.focusInitPositionY;
   }
