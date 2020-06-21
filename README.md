@@ -10,6 +10,12 @@ Accessible at **[hugomencoboni.github.io/taxon/][deployedWebSite]**, you can nav
 
 The current application uses **[the GBIF API][bgifAPILink]**.
 
+## Other
+
+For a better navigation on mobiles devices, feel free to download it as a PWA.
+
+![pwaDownload](doc/PWA_portrait_xs.png)
+
 [deployedWebSite]: https://hugomencoboni.github.io/taxonVisualization/
 [angularLink]: https://angular.io/
 [d3Link]: https://d3js.org/
