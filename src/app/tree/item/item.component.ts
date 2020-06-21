@@ -32,14 +32,16 @@ export class ItemComponent implements OnChanges, AfterViewInit {
     backgroundColor = 'white';
 
     textMargin = 10;
-    addButtonRadius = 2;
+    addButtonRadius = 7;
 
     initAtInfinit = true;
 
     private d3_circle: d3.Selection<SVGElement, {}, HTMLElement, any>;
     private d3_container: d3.Selection<SVGElement, {}, HTMLElement, any>;
     private d3_text: d3.Selection<BaseType, {}, HTMLElement, any>;
-    private d3_addButton: d3.Selection<SVGElement, {}, HTMLElement, any>;
+    private d3_addButtonCirle: d3.Selection<SVGElement, {}, HTMLElement, any>;
+    private d3_addButtonLine1: d3.Selection<SVGElement, {}, HTMLElement, any>;
+    private d3_addButtonLine2: d3.Selection<SVGElement, {}, HTMLElement, any>;
     private d3_clipPath: d3.Selection<SVGElement, {}, HTMLElement, any>;
     private d3_image: d3.Selection<BaseType, {}, HTMLElement, any>;
 
@@ -63,7 +65,9 @@ export class ItemComponent implements OnChanges, AfterViewInit {
         }
 
         if (changes.addButton) {
-            this.d3_addButton.attr('r', this.addButton ? this.addButtonRadius : 0);
+            this.d3_addButtonCirle.attr('r', this.addButton ? this.addButtonRadius : 0);
+            this.d3_addButtonLine1.attr('stroke-width', this.addButton ? 1 : 0);
+            this.d3_addButtonLine2.attr('stroke-width', this.addButton ? 1 : 0);
         }
 
         if (changes.text) {
@@ -124,21 +128,36 @@ export class ItemComponent implements OnChanges, AfterViewInit {
             })
             .on('click', () => this.selected.emit(this.id));
 
-        this.d3_addButton = d3.select(element).append('circle')
+        this.d3_addButtonCirle = d3.select(element).append('circle')
             .attr('cx', this.x + this.r + (this.initAtInfinit ? 3000 : 0))
             .attr('cy', this.y - this.r)
             .attr('r', this.addButton ? this.addButtonRadius : 0)
-            .attr('stroke', this.color)
             .attr('stroke-width', 1)
-            .attr('fill', this.backgroundColor)
-            .on('mouseover', () => {
-                this.d3_addButton
-                    .attr('fill', this.color);
-            })
-            .on('mouseout', () => {
-                this.d3_addButton
-                    .attr('fill', this.backgroundColor);
-            })
+            .attr('opacity', 0)
+            .on('mouseover', this.onAddButtonOver)
+            .on('mouseout', this.onAddButtonOut)
+            .on('click', () => this.add.emit(this.id));
+
+        this.d3_addButtonLine1 = d3.select(element).append('line')
+            .attr('x1', this.x + this.r + (this.initAtInfinit ? 3000 : 0))
+            .attr('y1', this.y - this.r - this.addButtonRadius)
+            .attr('x2', this.x + this.r + (this.initAtInfinit ? 3000 : 0))
+            .attr('y2', this.y - this.r + this.addButtonRadius)
+            .attr('stroke', this.color)
+            .attr('stroke-width', this.addButton ? 1 : 0)
+            .on('mouseover', this.onAddButtonOver)
+            .on('mouseout', this.onAddButtonOut)
+            .on('click', () => this.add.emit(this.id));
+
+        this.d3_addButtonLine2 = d3.select(element).append('line')
+            .attr('x1', this.x + this.r + (this.initAtInfinit ? 3000 : 0) - this.addButtonRadius)
+            .attr('y1', this.y - this.r)
+            .attr('x2', this.x + this.r + (this.initAtInfinit ? 3000 : 0) + this.addButtonRadius)
+            .attr('y2', this.y - this.r)
+            .attr('stroke', this.color)
+            .attr('stroke-width', this.addButton ? 1 : 0)
+            .on('mouseover', this.onAddButtonOver)
+            .on('mouseout', this.onAddButtonOut)
             .on('click', () => this.add.emit(this.id));
 
         this.statusChange();
@@ -183,9 +202,23 @@ export class ItemComponent implements OnChanges, AfterViewInit {
             { attr: 'y', newValue: this.y - this.r }
         ], 750);
 
-        this.d3_addButton.call(AttrTransition, [
+        this.d3_addButtonCirle.call(AttrTransition, [
             { attr: 'cx', newValue: this.x + this.r },
             { attr: 'cy', newValue: this.y - this.r }
+        ], 750);
+
+        this.d3_addButtonLine1.call(AttrTransition, [
+            { attr: 'x1', newValue: this.x + this.r },
+            { attr: 'y1', newValue: this.y - this.r - this.addButtonRadius },
+            { attr: 'x2', newValue: this.x + this.r },
+            { attr: 'y2', newValue: this.y - this.r + this.addButtonRadius }
+        ], 750);
+
+        this.d3_addButtonLine2.call(AttrTransition, [
+            { attr: 'x1', newValue: this.x + this.r - this.addButtonRadius },
+            { attr: 'y1', newValue: this.y - this.r },
+            { attr: 'x2', newValue: this.x + this.r + this.addButtonRadius },
+            { attr: 'y2', newValue: this.y - this.r }
         ], 750);
     }
 
@@ -196,5 +229,15 @@ export class ItemComponent implements OnChanges, AfterViewInit {
 
         this.d3_image.call(AttrTransition, [{ attr: 'xlink:href', newValue: this.mediaUrl[0] }], 750);
         this.d3_circle.call(AttrTransition, [{ attr: 'fill-opacity', newValue: this.mediaUrl.length ? 0 : 1 }], 0);
+    }
+
+    onAddButtonOver = () => {
+        this.d3_addButtonLine1.attr('stroke-width', 2);
+        this.d3_addButtonLine2.attr('stroke-width', 2);
+    }
+
+    onAddButtonOut = () => {
+        this.d3_addButtonLine1.attr('stroke-width', 1);
+        this.d3_addButtonLine2.attr('stroke-width', 1);
     }
 }
