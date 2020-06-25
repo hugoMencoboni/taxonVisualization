@@ -2,7 +2,7 @@
 
 Taxonomy representation using a mixt of **[Angular][angularLink]** and **[D3.js][d3Link]**.
 
-Accessible at **[hugomencoboni.github.io/taxon/][deployedWebSite]**, you can navigate in a taxonomic tree.
+Accessible at **[hugomencoboni.github.io/taxonVisualization/][deployedWebSite]**, you can navigate in a taxonomic tree.
 
 ![overview](doc/overview.gif)
 
