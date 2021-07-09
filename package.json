@@ -7,7 +7,8 @@
     "build": "ng build",
     "build-prod": "ng build --prod",
     "test": "ng test",
-    "cypress": "concurrently \"npm run start\" \"cypress open\"",
+    "cy:run": "cypress run",
+    "serve-and-run-cy": "concurrently \"npm run start\" \"wait-on http-get://localhost:4200 && npm run cy:run\" --kill-others --success first",
     "percy": "percy exec -- cypress run",
     "checkCommitMsg": "node ./husky/checkCommitMsg.js",
     "lint": "ng lint",
@@ -88,6 +89,7 @@
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
     "tslint-staged": "~0.1.2",
-    "typescript": "~3.8.3"
+    "typescript": "~3.8.3",
+    "wait-on": "^6.0.0"
   }
 }
