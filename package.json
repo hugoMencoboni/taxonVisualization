@@ -35,7 +35,9 @@
     "include": [
       "**/*.ts"
     ],
-    "exclude": []
+    "exclude": [
+      "cypress/"
+    ]
   },
   "dependencies": {
     "@angular/animations": "~9.1.1",
