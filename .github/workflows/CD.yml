@@ -8,22 +8,18 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-
     - name: Use Node.js 10.x
       uses: actions/setup-node@v1
       with:
         node-version: 10.x
-
     - name: Install
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        npm install
-        
+        npm install        
     - name: Deploy
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
