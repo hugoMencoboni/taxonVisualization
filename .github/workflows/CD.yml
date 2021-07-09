@@ -1,28 +1,5 @@
 name: Deploy to GitHub Pages via angular-cli-ghpages
 
-on: [push, pull_request]
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Use Node.js 10.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: 10.x
-      - name: Install
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          npm install
-      - name: Percy Test
-        uses: percy/exec-action@v0.1.2
-        with:
-          command: "percy exec -- cypress run"
-        env:
-          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
-
 on:
   push:
     branches:
