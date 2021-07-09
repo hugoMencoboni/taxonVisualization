@@ -17,6 +17,6 @@ jobs:
         run: |
           npm install
       - name: Percy Test
-        run: npx percy exec -- [your-test-command]
+        run: npx percy exec -- serve-and-run-cy 
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
